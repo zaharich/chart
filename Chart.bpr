@@ -1,0 +1,192 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!-- C++Builder XML Project -->
+<PROJECT>
+  <MACROS>
+    <VERSION value="BCB.06.00"/>
+    <PROJECT value="Chart.exe"/>
+    <OBJFILES value="Chart.obj Main.obj UnitSettings.obj Parametr.obj UnitAbout.obj 
+      UnitFormRashet.obj FileClassRashetParam.obj LibraryFile.obj TimeBar.obj 
+      CustomIniFile.obj Grid.obj startLog.obj myChart.obj myLabel.obj log.obj 
+      FlyingFile.obj ParametrFiz.obj ParametrRK.obj"/>
+    <RESFILES value="Chart.res"/>
+    <IDLFILES value=""/>
+    <IDLGENFILES value=""/>
+    <DEFFILE value=""/>
+    <RESDEPEN value="$(RESFILES) Main.dfm UnitSettings.dfm UnitAbout.dfm UnitFormRashet.dfm 
+      startLog.dfm"/>
+    <LIBFILES value=""/>
+    <LIBRARIES value="TeeGL8C6.lib bcbsmp.lib TeePro8C6.lib vclx.lib TeeUI8C6.lib Tee8C6.lib 
+      vcldb.lib TeeDB8C6.lib dbrtl.lib teedb.lib tee.lib rtl.lib vcl.lib"/>
+    <SPARELIBS value="vcl.lib rtl.lib tee.lib teedb.lib dbrtl.lib TeeDB8C6.lib vcldb.lib 
+      Tee8C6.lib TeeUI8C6.lib vclx.lib TeePro8C6.lib bcbsmp.lib TeeGL8C6.lib"/>
+    <PACKAGES value="vcl.bpi rtl.bpi dbrtl.bpi adortl.bpi vcldb.bpi vclx.bpi bdertl.bpi 
+      vcldbx.bpi ibxpress.bpi dsnap.bpi cds.bpi bdecds.bpi qrpt.bpi dss.bpi 
+      visualclx.bpi visualdbclx.bpi dsnapcrba.bpi dsnapcon.bpi bcbsmp.bpi 
+      vclie.bpi xmlrtl.bpi inet.bpi inetdbbde.bpi inetdbxpress.bpi inetdb.bpi 
+      nmfast.bpi webdsnap.bpi bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi 
+      dbexpress.bpi dbxcds.bpi indy.bpi bcb2kaxserver.bpi TeeDB8C6.bpi 
+      Tee8C6.bpi TeeUI8C6.bpi TeeWorld8C6.bpi TeeLanguage8C6.bpi TeePro8C6.bpi"/>
+    <PATHCPP value=".;"/>
+    <PATHPAS value=".;"/>
+    <PATHRC value=".;"/>
+    <PATHASM value=".;"/>
+    <DEBUGLIBPATH value="$(BCB)\lib\debug"/>
+    <RELEASELIBPATH value="$(BCB)\lib\release"/>
+    <LINKER value="ilink32"/>
+    <USERDEFINES value="_DEBUG"/>
+    <SYSDEFINES value="NO_STRICT;_RTLDLL"/>
+    <MAINSOURCE value="Chart.cpp"/>
+    <INCLUDEPATH value="&quot;C:\Program Files (x86)\Borland\CBuilder6\Projects&quot;;&quot;C:\Program Files\Borland\CBuilder6\Projects&quot;;$(BCB)\include;$(BCB)\include\vcl;&quot;C:\Program Files\Borland\CBuilder6\Include\TeeChart&quot;;&quot;C:\Program Files (x86)\Borland\CBuilder6\Include\TeeChart&quot;"/>
+    <LIBPATH value="&quot;C:\Program Files (x86)\Borland\CBuilder6\Projects&quot;;$(BCB)\lib\obj;$(BCB)\lib;&quot;C:\Program Files (x86)\Borland\CBuilder6\Bin&quot;;&quot;C:\Program Files\Borland\CBuilder6\Projects&quot;"/>
+    <WARNINGS value="-w-par"/>
+    <OTHERFILES value=""/>
+  </MACROS>
+  <OPTIONS>
+    <IDLCFLAGS value="-I&quot;C:\Program Files (x86)\Borland\CBuilder6\Projects&quot; 
+      -I&quot;C:\Program Files\Borland\CBuilder6\Projects&quot; -I$(BCB)\include 
+      -I$(BCB)\include\vcl 
+      -I&quot;C:\Program Files\Borland\CBuilder6\Include\TeeChart&quot; 
+      -I&quot;C:\Program Files (x86)\Borland\CBuilder6\Include\TeeChart&quot; -src_suffix 
+      cpp -D_DEBUG -boa"/>
+    <CFLAG1 value="-Od -H=$(BCB)\lib\vcl60.csm -Hc -Vx -Ve -X- -r- -a1 -5 -b- -k -y -v -vi- 
+      -c -tW -tWM"/>
+    <PFLAGS value="-$Y+ -$W -$O- -$A8 -v -JPHNE -M"/>
+    <RFLAGS value=""/>
+    <AFLAGS value="/mx /w2 /zi"/>
+    <LFLAGS value="-D&quot;&quot; -aa -Tpe -x -Gn -w -v"/>
+    <OTHERFILES value=""/>
+  </OPTIONS>
+  <LINKER>
+    <ALLOBJ value="c0w32.obj Memmgr.Lib sysinit.obj $(OBJFILES)"/>
+    <ALLRES value="$(RESFILES)"/>
+    <ALLLIB value="$(LIBFILES) $(LIBRARIES) import32.lib cp32mti.lib"/>
+    <OTHERFILES value=""/>
+  </LINKER>
+  <FILELIST>
+      <FILE FILENAME="Chart.res" FORMNAME="" UNITNAME="Chart.res" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Chart.cpp" FORMNAME="" UNITNAME="Chart" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Main.cpp" FORMNAME="Form1" UNITNAME="Main" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="UnitMain.h" FORMNAME="" UNITNAME="UnitMain" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Chart.todo" FORMNAME="" UNITNAME="Chart.todo" CONTAINERID="ToDo" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="UnitSettings.cpp" FORMNAME="FormSettings" UNITNAME="UnitSettings" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Parametr.cpp" FORMNAME="" UNITNAME="Parametr" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="UnitAbout.cpp" FORMNAME="FormAbout" UNITNAME="UnitAbout" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="UnitFormRashet.cpp" FORMNAME="FormRashet" UNITNAME="UnitFormRashet" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="FileClassRashetParam.cpp" FORMNAME="" UNITNAME="FileClassRashetParam" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="LibraryFile.cpp" FORMNAME="" UNITNAME="LibraryFile" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="TimeBar.cpp" FORMNAME="" UNITNAME="TimeBar" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="CustomIniFile.cpp" FORMNAME="" UNITNAME="CustomIniFile" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Grid.cpp" FORMNAME="" UNITNAME="Grid" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="startLog.cpp" FORMNAME="startLogForm" UNITNAME="startLog" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="myChart.cpp" FORMNAME="" UNITNAME="myChart" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="myLabel.cpp" FORMNAME="" UNITNAME="myLabel" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="log.cpp" FORMNAME="" UNITNAME="log" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="FlyingFile.cpp" FORMNAME="" UNITNAME="FlyingFile" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ParametrFiz.cpp" FORMNAME="" UNITNAME="ParametrFiz" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ParametrRK.cpp" FORMNAME="" UNITNAME="ParametrRK" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+  </FILELIST>
+  <BUILDTOOLS>
+  </BUILDTOOLS>
+
+  <IDEOPTIONS>
+[Version Info]
+IncludeVerInfo=0
+AutoIncBuild=0
+MajorVer=1
+MinorVer=0
+Release=0
+Build=0
+Debug=0
+PreRelease=0
+Special=0
+Private=0
+DLL=0
+Locale=1049
+CodePage=1251
+
+[Version Info Keys]
+CompanyName=
+FileDescription=
+FileVersion=1.0.0.0
+InternalName=
+LegalCopyright=
+LegalTrademarks=
+OriginalFilename=
+ProductName=
+ProductVersion=1.0.0.0
+Comments=
+
+[Excluded Packages]
+c:\program files (x86)\borland\cbuilder6\Bin\dcltee60.bpl=TeeChart Components
+c:\program files (x86)\borland\cbuilder6\Bin\dcltqr60.bpl=TeeChart for QuickReport Components
+D:\Новая папка\Старый комп\Старый комп\Tee\TeeChartPro_8.06_Src\TeeChart Pro 8.06 Source\Sources\..\TeeTree\Compiled\Builder6\Bin\DclTree2C6Tee8.bpl=TeeTree 2 Components
+c:\program files (x86)\borland\cbuilder6\Bin\dcldss60.bpl=Borland Decision Cube Components
+
+[HistoryLists\hlIncludePath]
+Count=15
+Item0=C:\Program Files (x86)\Borland\CBuilder6\Projects;C:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;C:\Program Files\Borland\CBuilder6\Include\TeeChart;C:\Program Files (x86)\Borland\CBuilder6\Include\TeeChart
+Item1=C:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;C:\Program Files\Borland\CBuilder6\Include\TeeChart;C:\Program Files (x86)\Borland\CBuilder6\Include\TeeChart
+Item2=C:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;C:\Program Files\Borland\CBuilder6\Include\TeeChart
+Item3=$(BCB)\include;$(BCB)\include\vcl;C:\Program Files\Borland\CBuilder6\Include\TeeChart
+Item4=$(BCB)\include;$(BCB)\include\vcl;C:\Program Files (x86)\Borland\CBuilder6\Include\TeeChart
+Item5=$(BCB)\include;$(BCB)\include\vcl;D:\Program Files (x86)\Borland\CBuilder6\Include\TeeChart
+Item6=$(BCB)\include;$(BCB)\include\vcl;C:\Program Files\Borland\CBuilder6\Include\TeeChart;C:\Program Files (x86)\Borland\CBuilder6\Include\TeeChart
+Item7=C:\Program Files (x86)\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;C:\Program Files (x86)\Borland\CBuilder6\Include\TeeChart
+Item8=C:\Program Files\Borland\CBuilder6\Projects;C:\Program Files\Borland\CBuilder6\Bin;$(BCB)\include;$(BCB)\include\vcl;C:\Program Files\Borland\CBuilder6\Include\TeeChart
+Item9=C:\Program Files\Borland\CBuilder6\Projects;C:\Program Files\Borland\CBuilder6\Bin;$(BCB)\include;$(BCB)\include\vcl
+Item10=C:\Program Files\Borland\CBuilder6\Projects;C:\Program Files\Borland\CBuilder6\Bin;$(BCB)\include;$(BCB)\include\vcl;D:\MinimaxWin_ВЕРСИЯ_48FM\xp;C:\Program Files (x86)\Borland\CBuilder6\Bin
+Item11=D:\Ярлыки\10-delete;C:\Program Files (x86)\Borland\CBuilder6\Bin;D:\Ярлыки\7-info;D:\MinimaxWin_ВЕРСИЯ_48FM\xp;C:\Program Files\Borland\CBuilder6\Projects;C:\Program Files\Borland\CBuilder6\Bin;$(BCB)\include;$(BCB)\include\vcl
+Item12=C:\Program Files (x86)\Borland\CBuilder6\Bin;D:\Ярлыки\7-info;D:\MinimaxWin_ВЕРСИЯ_48FM\xp;C:\Program Files\Borland\CBuilder6\Projects;C:\Program Files\Borland\CBuilder6\Bin;$(BCB)\include;$(BCB)\include\vcl
+Item13=D:\Ярлыки\7-info;D:\MinimaxWin_ВЕРСИЯ_48FM\xp;C:\Program Files\Borland\CBuilder6\Projects;C:\Program Files\Borland\CBuilder6\Bin;$(BCB)\include;$(BCB)\include\vcl
+Item14=D:\Ярлыки\7-info;D:\MinimaxWin_ВЕРСИЯ_48FM\xp;C:\Program Files\Borland\CBuilder6\Projects;C:\Program Files\Borland\CBuilder6\Bin;C:\Графика_CPP_BUILDER\ПРИМЕР;$(BCB)\include;$(BCB)\include\vcl
+
+[HistoryLists\hlLibraryPath]
+Count=7
+Item0=C:\Program Files (x86)\Borland\CBuilder6\Projects;$(BCB)\lib\obj;$(BCB)\lib;C:\Program Files (x86)\Borland\CBuilder6\Bin;C:\Program Files\Borland\CBuilder6\Projects
+Item1=$(BCB)\lib\obj;$(BCB)\lib;C:\Program Files (x86)\Borland\CBuilder6\Bin;C:\Program Files\Borland\CBuilder6\Projects
+Item2=C:\Program Files\Borland\CBuilder6\Projects;C:\Program Files\Borland\CBuilder6\Bin;$(BCB)\lib\obj;$(BCB)\lib;C:\Program Files (x86)\Borland\CBuilder6\Bin;D:\MinimaxWin_ВЕРСИЯ_48FM\xp
+Item3=D:\Ярлыки\10-delete;C:\Program Files (x86)\Borland\CBuilder6\Bin;D:\Ярлыки\7-info;D:\MinimaxWin_ВЕРСИЯ_48FM\xp;C:\Program Files\Borland\CBuilder6\Projects;C:\Program Files\Borland\CBuilder6\Bin;$(BCB)\lib\obj;$(BCB)\lib
+Item4=C:\Program Files (x86)\Borland\CBuilder6\Bin;D:\Ярлыки\7-info;D:\MinimaxWin_ВЕРСИЯ_48FM\xp;C:\Program Files\Borland\CBuilder6\Projects;C:\Program Files\Borland\CBuilder6\Bin;$(BCB)\lib\obj;$(BCB)\lib
+Item5=D:\Ярлыки\7-info;D:\MinimaxWin_ВЕРСИЯ_48FM\xp;C:\Program Files\Borland\CBuilder6\Projects;C:\Program Files\Borland\CBuilder6\Bin;$(BCB)\lib\obj;$(BCB)\lib
+Item6=D:\Ярлыки\7-info;D:\MinimaxWin_ВЕРСИЯ_48FM\xp;C:\Program Files\Borland\CBuilder6\Projects;C:\Program Files\Borland\CBuilder6\Bin;C:\Графика_CPP_BUILDER\ПРИМЕР;$(BCB)\lib\obj;$(BCB)\lib
+
+[HistoryLists\hlDebugSourcePath]
+Count=2
+Item0=$(BCB)\source\vcl;C:\Program Files (x86)\Borland\CBuilder6\Examples\Controls\Source\
+Item1=$(BCB)\source\vcl
+
+[HistoryLists\hlConditionals]
+Count=1
+Item0=_DEBUG
+
+[Debugging]
+DebugSourceDirs=$(BCB)\source\vcl;C:\Program Files (x86)\Borland\CBuilder6\Examples\Controls\Source\
+
+[Parameters]
+RunParams=
+Launcher=
+UseLauncher=0
+DebugCWD=
+HostApplication=
+RemoteHost=
+RemotePath=
+RemoteLauncher=
+RemoteCWD=
+RemoteDebug=0
+
+[Compiler]
+ShowInfoMsgs=0
+LinkDebugVcl=0
+LinkCGLIB=0
+
+[CORBA]
+AddServerUnit=1
+AddClientUnit=1
+PrecompiledHeaders=1
+
+[Language]
+ActiveLang=
+ProjectLang=
+RootDir=
+  </IDEOPTIONS>
+</PROJECT>
