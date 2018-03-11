@@ -36,7 +36,7 @@
     <USERDEFINES value="_DEBUG"/>
     <SYSDEFINES value="NO_STRICT;_RTLDLL"/>
     <MAINSOURCE value="Chart.cpp"/>
-    <INCLUDEPATH value="&quot;C:\Program Files (x86)\Borland\CBuilder6\Projects&quot;;&quot;C:\Program Files\Borland\CBuilder6\Projects&quot;;$(BCB)\include;$(BCB)\include\vcl;&quot;C:\Program Files\Borland\CBuilder6\Include\TeeChart&quot;;&quot;C:\Program Files (x86)\Borland\CBuilder6\Include\TeeChart&quot;"/>
+    <INCLUDEPATH value="&quot;C:\Program Files (x86)\Borland\CBuilder6\Projects&quot;;&quot;C:\Program Files\Borland\CBuilder6\Projects&quot;;$(BCB)\include;$(BCB)\include\vcl;&quot;C:\Program Files\Borland\CBuilder6\Include\TeeChart&quot;;&quot;C:\Program Files (x86)\Borland\CBuilder6\Include\TeeChart&quot;;&quot;D:\Program Files (x86)\Borland\CBuilder6\Include\TeeChart&quot;"/>
     <LIBPATH value="&quot;C:\Program Files (x86)\Borland\CBuilder6\Projects&quot;;$(BCB)\lib\obj;$(BCB)\lib;&quot;C:\Program Files (x86)\Borland\CBuilder6\Bin&quot;;&quot;C:\Program Files\Borland\CBuilder6\Projects&quot;"/>
     <WARNINGS value="-w-par"/>
     <OTHERFILES value=""/>
@@ -46,7 +46,8 @@
       -I&quot;C:\Program Files\Borland\CBuilder6\Projects&quot; -I$(BCB)\include 
       -I$(BCB)\include\vcl 
       -I&quot;C:\Program Files\Borland\CBuilder6\Include\TeeChart&quot; 
-      -I&quot;C:\Program Files (x86)\Borland\CBuilder6\Include\TeeChart&quot; -src_suffix 
+      -I&quot;C:\Program Files (x86)\Borland\CBuilder6\Include\TeeChart&quot; 
+      -I&quot;D:\Program Files (x86)\Borland\CBuilder6\Include\TeeChart&quot; -src_suffix 
       cpp -D_DEBUG -boa"/>
     <CFLAG1 value="-Od -H=$(BCB)\lib\vcl60.csm -Hc -Vx -Ve -X- -r- -a1 -5 -b- -k -y -v -vi- 
       -c -tW -tWM"/>
@@ -117,28 +118,26 @@ ProductVersion=1.0.0.0
 Comments=
 
 [Excluded Packages]
-c:\program files (x86)\borland\cbuilder6\Bin\dcltee60.bpl=TeeChart Components
-c:\program files (x86)\borland\cbuilder6\Bin\dcltqr60.bpl=TeeChart for QuickReport Components
-D:\Новая папка\Старый комп\Старый комп\Tee\TeeChartPro_8.06_Src\TeeChart Pro 8.06 Source\Sources\..\TeeTree\Compiled\Builder6\Bin\DclTree2C6Tee8.bpl=TeeTree 2 Components
-c:\program files (x86)\borland\cbuilder6\Bin\dcldss60.bpl=Borland Decision Cube Components
+d:\program files (x86)\borland\cbuilder6\Bin\dcldss60.bpl=Borland Decision Cube Components
 
 [HistoryLists\hlIncludePath]
-Count=15
-Item0=C:\Program Files (x86)\Borland\CBuilder6\Projects;C:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;C:\Program Files\Borland\CBuilder6\Include\TeeChart;C:\Program Files (x86)\Borland\CBuilder6\Include\TeeChart
-Item1=C:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;C:\Program Files\Borland\CBuilder6\Include\TeeChart;C:\Program Files (x86)\Borland\CBuilder6\Include\TeeChart
-Item2=C:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;C:\Program Files\Borland\CBuilder6\Include\TeeChart
-Item3=$(BCB)\include;$(BCB)\include\vcl;C:\Program Files\Borland\CBuilder6\Include\TeeChart
-Item4=$(BCB)\include;$(BCB)\include\vcl;C:\Program Files (x86)\Borland\CBuilder6\Include\TeeChart
-Item5=$(BCB)\include;$(BCB)\include\vcl;D:\Program Files (x86)\Borland\CBuilder6\Include\TeeChart
-Item6=$(BCB)\include;$(BCB)\include\vcl;C:\Program Files\Borland\CBuilder6\Include\TeeChart;C:\Program Files (x86)\Borland\CBuilder6\Include\TeeChart
-Item7=C:\Program Files (x86)\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;C:\Program Files (x86)\Borland\CBuilder6\Include\TeeChart
-Item8=C:\Program Files\Borland\CBuilder6\Projects;C:\Program Files\Borland\CBuilder6\Bin;$(BCB)\include;$(BCB)\include\vcl;C:\Program Files\Borland\CBuilder6\Include\TeeChart
-Item9=C:\Program Files\Borland\CBuilder6\Projects;C:\Program Files\Borland\CBuilder6\Bin;$(BCB)\include;$(BCB)\include\vcl
-Item10=C:\Program Files\Borland\CBuilder6\Projects;C:\Program Files\Borland\CBuilder6\Bin;$(BCB)\include;$(BCB)\include\vcl;D:\MinimaxWin_ВЕРСИЯ_48FM\xp;C:\Program Files (x86)\Borland\CBuilder6\Bin
-Item11=D:\Ярлыки\10-delete;C:\Program Files (x86)\Borland\CBuilder6\Bin;D:\Ярлыки\7-info;D:\MinimaxWin_ВЕРСИЯ_48FM\xp;C:\Program Files\Borland\CBuilder6\Projects;C:\Program Files\Borland\CBuilder6\Bin;$(BCB)\include;$(BCB)\include\vcl
-Item12=C:\Program Files (x86)\Borland\CBuilder6\Bin;D:\Ярлыки\7-info;D:\MinimaxWin_ВЕРСИЯ_48FM\xp;C:\Program Files\Borland\CBuilder6\Projects;C:\Program Files\Borland\CBuilder6\Bin;$(BCB)\include;$(BCB)\include\vcl
-Item13=D:\Ярлыки\7-info;D:\MinimaxWin_ВЕРСИЯ_48FM\xp;C:\Program Files\Borland\CBuilder6\Projects;C:\Program Files\Borland\CBuilder6\Bin;$(BCB)\include;$(BCB)\include\vcl
-Item14=D:\Ярлыки\7-info;D:\MinimaxWin_ВЕРСИЯ_48FM\xp;C:\Program Files\Borland\CBuilder6\Projects;C:\Program Files\Borland\CBuilder6\Bin;C:\Графика_CPP_BUILDER\ПРИМЕР;$(BCB)\include;$(BCB)\include\vcl
+Count=16
+Item0=C:\Program Files (x86)\Borland\CBuilder6\Projects;C:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;C:\Program Files\Borland\CBuilder6\Include\TeeChart;C:\Program Files (x86)\Borland\CBuilder6\Include\TeeChart;D:\Program Files (x86)\Borland\CBuilder6\Include\TeeChart
+Item1=C:\Program Files (x86)\Borland\CBuilder6\Projects;C:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;C:\Program Files\Borland\CBuilder6\Include\TeeChart;C:\Program Files (x86)\Borland\CBuilder6\Include\TeeChart
+Item2=C:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;C:\Program Files\Borland\CBuilder6\Include\TeeChart;C:\Program Files (x86)\Borland\CBuilder6\Include\TeeChart
+Item3=C:\Program Files\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;C:\Program Files\Borland\CBuilder6\Include\TeeChart
+Item4=$(BCB)\include;$(BCB)\include\vcl;C:\Program Files\Borland\CBuilder6\Include\TeeChart
+Item5=$(BCB)\include;$(BCB)\include\vcl;C:\Program Files (x86)\Borland\CBuilder6\Include\TeeChart
+Item6=$(BCB)\include;$(BCB)\include\vcl;D:\Program Files (x86)\Borland\CBuilder6\Include\TeeChart
+Item7=$(BCB)\include;$(BCB)\include\vcl;C:\Program Files\Borland\CBuilder6\Include\TeeChart;C:\Program Files (x86)\Borland\CBuilder6\Include\TeeChart
+Item8=C:\Program Files (x86)\Borland\CBuilder6\Projects;$(BCB)\include;$(BCB)\include\vcl;C:\Program Files (x86)\Borland\CBuilder6\Include\TeeChart
+Item9=C:\Program Files\Borland\CBuilder6\Projects;C:\Program Files\Borland\CBuilder6\Bin;$(BCB)\include;$(BCB)\include\vcl;C:\Program Files\Borland\CBuilder6\Include\TeeChart
+Item10=C:\Program Files\Borland\CBuilder6\Projects;C:\Program Files\Borland\CBuilder6\Bin;$(BCB)\include;$(BCB)\include\vcl
+Item11=C:\Program Files\Borland\CBuilder6\Projects;C:\Program Files\Borland\CBuilder6\Bin;$(BCB)\include;$(BCB)\include\vcl;D:\MinimaxWin_ВЕРСИЯ_48FM\xp;C:\Program Files (x86)\Borland\CBuilder6\Bin
+Item12=D:\Ярлыки\10-delete;C:\Program Files (x86)\Borland\CBuilder6\Bin;D:\Ярлыки\7-info;D:\MinimaxWin_ВЕРСИЯ_48FM\xp;C:\Program Files\Borland\CBuilder6\Projects;C:\Program Files\Borland\CBuilder6\Bin;$(BCB)\include;$(BCB)\include\vcl
+Item13=C:\Program Files (x86)\Borland\CBuilder6\Bin;D:\Ярлыки\7-info;D:\MinimaxWin_ВЕРСИЯ_48FM\xp;C:\Program Files\Borland\CBuilder6\Projects;C:\Program Files\Borland\CBuilder6\Bin;$(BCB)\include;$(BCB)\include\vcl
+Item14=D:\Ярлыки\7-info;D:\MinimaxWin_ВЕРСИЯ_48FM\xp;C:\Program Files\Borland\CBuilder6\Projects;C:\Program Files\Borland\CBuilder6\Bin;$(BCB)\include;$(BCB)\include\vcl
+Item15=D:\Ярлыки\7-info;D:\MinimaxWin_ВЕРСИЯ_48FM\xp;C:\Program Files\Borland\CBuilder6\Projects;C:\Program Files\Borland\CBuilder6\Bin;C:\Графика_CPP_BUILDER\ПРИМЕР;$(BCB)\include;$(BCB)\include\vcl
 
 [HistoryLists\hlLibraryPath]
 Count=7

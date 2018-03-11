@@ -28,8 +28,11 @@
 #include "Teengine.hpp"                                  
 #include <iostream.h>
 #include <fstream.h>
-
-//---------------------------------------------------------------------------
+/*---------------------------------------------------------------------------
+1) Clear Temp folder befor start program
+2) Clear data-series befor start build graph
+3) Create customAxis class
+//-------------------------------------------------------------------------*/
 #pragma package(smart_init)
 #pragma link "TeeComma"
 #pragma link "TeeScroB"
@@ -935,7 +938,7 @@ void __fastcall TForm1::NFormatSaveAsClick(TObject *Sender)
  SaveCurrentTab(SourceDir + "\\Temp\\");
  SaveFormatAs();
  // SaveFormatAs -> SaveCurrentTab -> (*i)->SaveSeriesTitle
- // Title заполнен атрибутами NSis MarkerSymbol NStructRK afterComma visible
+ // Title заполнен атрибутами NSis markerSymbol NStructRK afterComma visible
  // необходимо очистить Title
  for(list_it i = mainChart->mainList.begin(); i != mainChart->mainList.end(); ++i)
      (*i)->LoadSeriesTitle();

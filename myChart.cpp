@@ -31,6 +31,7 @@ myChart::myChart(TScrollBox* container, TStringGrid* sg, TPopupMenu* contexMenu,
     , countHorizLine(20)
     , countVertLine(10)
     , build(NO_BUILD)
+    , button(0)
 {
   chart = new TChart(container);
   chart->Parent = container;
@@ -104,6 +105,7 @@ void myChart::chartInit()
 
   stretch = 0;
   button = MOVE;
+  int t = button;
 };
 
 
@@ -179,7 +181,7 @@ void myChart::ChartToFile(const AnsiString& pathToTeeFile, bool includeData, boo
  chart->SubTitle->Text->Strings[0] = FloatToStr(chart->BottomAxis->Minimum)
          + "$" + FloatToStr(chart->BottomAxis->Maximum) + "$" + IntToStr(build);
 
- // save parametr settings. Format("Title Nsis MarkerSymbol NStructRK afterComma Visible")
+ // save parametr settings. Format("Title Nsis markerSymbol NStructRK afterComma Visible")
  for(list_it i = mainList.begin(); i != mainList.end(); ++i)
      (*i)->SaveSeriesTitle();
 
@@ -206,9 +208,6 @@ bool myChart::openChartFromFile(const String& teeName)
  loadEdit();
 
  // create
- String str = chart->SeriesList->Items[1]->Title;
- str = chart->SeriesList->Items[2]->Title;
- str = chart->SeriesList->Items[3]->Title;
  for(int i = 0; i < (chart->SeriesList->Count - 1); ++i)
  {
      Parametr* p;
@@ -307,7 +306,8 @@ void myChart::printParametrsTo(TStringGrid* dest)
 {
  dest->RowCount = 0;
  int i = 0;
- for(list_it b = mainList.begin(), e = mainList.end(); b != e; ++b){
+ for(list_it b = mainList.begin(), e = mainList.end(); b != e; ++b)
+ {
     dest->RowCount++;
     dest->Cells[0][i++] = (*b)->Axis->Title->Caption;
  }
@@ -359,7 +359,8 @@ void __fastcall myChart::chartClickAxis(TCustomChart *Sender,
  currentPar->showInfo();
 
  // control by button;
- if(button != NONE){
+ if(button != NONE)
+ {
     if(button == DEL){
       deleteParametr(currentPar->Axis);
       return;
@@ -392,9 +393,10 @@ void __fastcall myChart::chartClickAxis(TCustomChart *Sender,
 void __fastcall myChart::chartMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
- if(currentPar){
+ if(currentPar)
+ {
     currentPar->slimAxis();
-    currentPar = NULL;
+    //currentPar = NULL;
  }
  X0 = X;  Y0 = Y;
 
@@ -435,7 +437,6 @@ void myChart::AxisMove(double dy, double dx)
   currentPar->Axis->StartPosition += dy;
   currentPar->Axis->EndPosition += dy;
   currentPar->Axis->PositionPercent += dx;
-  //currentPar->showInfo();
 };
 
 
@@ -513,7 +514,8 @@ void __fastcall myChart::chartMouseMove(TObject *Sender, TShiftState Shift,
  }
 
  // при наведении на шкалу, она подсвечивается
- for(list_it i = mainList.begin(); i != mainList.end(); ++i){
+ for(list_it i = mainList.begin(); i != mainList.end(); ++i)
+ {
     if( (*i)->Axis->Clicked(X, Y) )
        (*i)->fullAxis();
     else
@@ -602,17 +604,20 @@ void __fastcall myChart::chartMouseMove(TObject *Sender, TShiftState Shift,
  }
 
  // выбрана ось
- if(SelectAxis){
+ if(SelectAxis)
+ {
     double dy = (LEFTAXISLENGHT / chart->LeftAxis->IAxisSize) * (Y - Y0),
            dx = (LEFTAXISLENGHT / chart->BottomAxis->IAxisSize) * (X - X0);
     int PixelInCell = chart->LeftAxis->IAxisSize / (LEFTAXISLENGHT / chart->LeftAxis->Increment);
 
     if(button == STRETCH)   // растяжка оси одинакова в двух режимах
        AxisStretch(PixelInCell, Y);
-    else{
-       // УПРАВЛЕНИЕ КНОПКАМИ
-       if(button != NONE){
-          if(button == MOVE){
+    else
+    {  // УПРАВЛЕНИЕ КНОПКАМИ
+       if(button != NONE)
+       {
+          if(button == MOVE)
+          {
               AxisMove(dy, dx);
               X0 = X; Y0 =Y;
           }
@@ -621,7 +626,8 @@ void __fastcall myChart::chartMouseMove(TObject *Sender, TShiftState Shift,
        }
        // УПРАВЛЕНИЕ ТОЛЬКО МЫШЬЮ
        else{
-          if(stretch != 3){
+          if(stretch != 3)
+          {
              AxisMove(dy, dx);
              X0 = X; Y0 =Y;
           }
@@ -641,7 +647,8 @@ void __fastcall myChart::chartMouseMove(TObject *Sender, TShiftState Shift,
 void __fastcall myChart::chartMouseUp(TObject *Sender, TMouseButton Button,
       TShiftState Shift, int X, int Y)
 {
- if(SelectAxis){
+ if(SelectAxis)
+ {
     if(linkAxisButton)
         LinkToGrid(currentPar->Axis);
     if(stretch == 2 || stretch == 3)
@@ -655,9 +662,10 @@ void __fastcall myChart::chartMouseUp(TObject *Sender, TMouseButton Button,
  mouseDown = false;
  SelectAxis = false;
 
- // ZOOM - ZOOM
- if(zoomButton){
-    if(Button == mbLeft && kzoom < 3){
+ if(zoomButton)
+ {
+    if(Button == mbLeft && kzoom < 3)
+    {
        ++kzoom;
        chart->Align = alNone;
        chart->Width *= 2;
@@ -794,7 +802,7 @@ void __fastcall myChart::chartAfterDraw(TObject *Sender)
                 Chart1->Canvas->Font->Size = -12;
              Chart1->Canvas->Font->Color = Par[i]->Series->Color;
              for(int j=0; j<6; j++)
-                Chart1->Canvas->TextOut(Par[i]->Series->CalcXPos(j*a+1), Par[i]->Series->CalcYPos(j*a+1)-15, Par[i]->MarkerSymbol);
+                Chart1->Canvas->TextOut(Par[i]->Series->CalcXPos(j*a+1), Par[i]->Series->CalcYPos(j*a+1)-15, Par[i]->markerSymbol);
           }
        }
     }
@@ -899,7 +907,8 @@ void myChart::labelInfoOff()
 void myChart::createMinMaxEdit(TChartAxis* axis)
 {
   //---- editMin
-  if(editMax != 0){
+  if(editMax != 0)
+  {
     delete editMax;
     editMax = 0;
   }
@@ -916,7 +925,8 @@ void myChart::createMinMaxEdit(TChartAxis* axis)
   editMax->Text = axis->Maximum;
 
   //---- editMax
-  if(editMin != 0){
+  if(editMin != 0)
+  {
     delete editMin;
     editMin = 0;
   }
@@ -933,7 +943,8 @@ void myChart::createMinMaxEdit(TChartAxis* axis)
   editMin->Text = currentPar->Axis->Minimum;
 
   //---- buttonMinMaxOk
-  if(buttonMinMaxOk != 0){
+  if(buttonMinMaxOk != 0)
+  {
     delete buttonMinMaxOk;
     buttonMinMaxOk = 0;
   }
@@ -950,15 +961,18 @@ void myChart::createMinMaxEdit(TChartAxis* axis)
 
 void myChart::deleteMinMaxEdit()
 {
- if(editMin != 0){
+ if(editMin != 0)
+ {
   delete editMin;
   editMin = 0;
  }
- if(editMax != 0){
+ if(editMax != 0)
+ {
   delete editMax;
   editMax = 0;
  }
- if(buttonMinMaxOk != 0){
+ if(buttonMinMaxOk != 0)
+ {
   delete buttonMinMaxOk;
   buttonMinMaxOk = 0;
  }
@@ -970,9 +984,9 @@ void myChart::deleteMinMaxEdit()
 //==============================================================================
 void myChart::clearAllSeries()
 {
-  for(list_it i = mainList.begin(), j = mainList.end(); i != j; ++i)
+ for(list_it i = mainList.begin(), j = mainList.end(); i != j; ++i)
     (*i)->GetSeries()->Clear();
-  build = NO_BUILD;
+ build = NO_BUILD;
 };
 
 
@@ -981,8 +995,8 @@ void myChart::clearAllSeries()
 //==============================================================================
 void myChart::addLabel()
 {
-  labelList.push_back(&myLabel(chart));
-  labelList.back()->PopupMenu->Items->Items[0]->OnClick = deleteLabel;
+ labelList.push_back(&myLabel(chart));
+ labelList.back()->PopupMenu->Items->Items[0]->OnClick = deleteLabel;
 };
 
 
@@ -991,10 +1005,10 @@ void myChart::addLabel()
 //==============================================================================
 void __fastcall myChart::deleteLabel(TObject* Sender)
 {
-  myLabel* p = myLabel::getCurrentLabel();
-  labelList.remove(myLabel::getCurrentLabel());
-  delete p;
-  p = 0;
+ myLabel* p = myLabel::getCurrentLabel();
+ labelList.remove(myLabel::getCurrentLabel());
+ delete p;
+ p = 0;
 };
 
 //==============================================================================
@@ -1002,11 +1016,12 @@ void __fastcall myChart::deleteLabel(TObject* Sender)
 //==============================================================================
 void myChart::deleteAllLabels()
 {
- while( !labelList.empty()){
+ while( !labelList.empty())
+ {
     myLabel* p = labelList.back();
     labelList.pop_back();
     delete p;
-    p = 0;
+    p = NULL;
  }
 }
 
@@ -1088,7 +1103,8 @@ Parametr* myChart::findParByAxis(TChartAxis* axis)
 //==============================================================================
 void myChart::cutInterval()
 {
- if( !cutIntervalButton){
+ if( !cutIntervalButton)
+ {
     ShowMessage("Сначала выделите интервал");
     return;
  }

@@ -30,7 +30,8 @@ class Parametr
         int KolSis;                         // количество систем
         int axisSizeInCell;                 // размер оси в делениях сетки
         String afterComma;                  // кол-вo знаков после запятой
-        String MarkerSymbol;                // символ маркера
+        String markerSymbol;                // символ маркера
+        String seriesTitle;                 // идентификатор параметра и наименование серии
 
         // constructor and destructor
         virtual ~Parametr();
@@ -42,20 +43,22 @@ class Parametr
         Parametr(const Parametr &P);
         const Parametr& operator = (const Parametr &P);
 
-        virtual void LoadSeriesTitle() = 0;
-        virtual void SaveSeriesTitle() = 0;
-
         void SetNSisInTitle(int ns);
         void DrawTitle(bool printing, int kzoom);
 
-        void  fullAxis();
-        void  slimAxis();
+        void fullAxis();
+        void slimAxis();
+
+        // virtual methods
+        virtual void LoadSeriesTitle() = 0;
+        virtual void SaveSeriesTitle() = 0;
         virtual void showInfo() = 0;
         virtual void SeriesAdd(const double, const double) = 0;
         virtual bool GetTagSeries() = 0;
         virtual String GetSeriesTitle() = 0;
         virtual int GetSeriesWidth() = 0;
         virtual TCustomLineSeries* GetSeries() = 0;
+        virtual void typeInfo(){ShowMessage("Parametr");};
 
         //static Parametr* findParBySeriesTitle(std::list<Parametr*> list, String& title);
         static Parametr* findParByAxisTitle(std::list<Parametr*> list, String& title);
@@ -65,7 +68,6 @@ class Parametr
 
         //void LinkAxisToGrid(TChart* chart, TChartAxis* axis);
         //int GetNStructRK(int NumberRK, int max);
-        virtual void typeInfo(){ShowMessage("Parametr");};
 };
 
 #endif Parametr_H

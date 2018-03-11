@@ -84,7 +84,7 @@ Parametr::Parametr(const int NumPasp, TChart* chart)
  // additional values
  NPasp = NumPasp;
  tekPaspChart = FlyingFile::Instance().getPtrPaspChart() + NPasp;
- String TekIdent = String(tekPaspChart->Ident);
+ String tekIdent = tekPaspChart->Ident;
  int N = chart->SeriesCount() - 1;
 
  // create axis and series
@@ -122,8 +122,9 @@ Parametr::Parametr(const int NumPasp, TChart* chart)
 
  // Title
  Axis->Title->Angle = 90;
- Axis->Title->Caption = TekIdent;
- //Series->Title = TekIdent;
+ Axis->Title->Caption = tekIdent;
+ //Series->Title = tekIdent;
+ seriesTitle = tekIdent;
  NSis = ChoiseSistem();
  Axis->Title->Visible = false;
  KolSis = CountOfSystem();
@@ -131,7 +132,7 @@ Parametr::Parametr(const int NumPasp, TChart* chart)
     Axis->Title->Caption = Axis->Title->Caption + " " + StrToInt(NSis);
 
  // символ маркера по умолчанию - 2-ой символ в идентификаторе
- MarkerSymbol = Axis->Title->Caption.SubString(2, 1);
+ markerSymbol = Axis->Title->Caption.SubString(2, 1);
 }
 
 
@@ -167,7 +168,7 @@ Parametr::Parametr()
  NSis = 0;
  KolSis = 0;
  NPasp = 0;
- MarkerSymbol = "a";
+ markerSymbol = "a";
  afterComma = "0.0";
 }
 
@@ -188,7 +189,7 @@ Parametr::Parametr(const Parametr &P)
  NSis = P.NSis;
  KolSis = P.KolSis;
  NPasp = P.NPasp;
- MarkerSymbol = P.MarkerSymbol;
+ markerSymbol = P.markerSymbol;
  afterComma = P.afterComma;
 }
 
@@ -208,7 +209,7 @@ const Parametr& Parametr::operator=(const Parametr &P)
  NSis = P.NSis;
  KolSis = P.KolSis;
  NPasp = P.NPasp;
- MarkerSymbol = P.MarkerSymbol;
+ markerSymbol = P.markerSymbol;
  afterComma = P.afterComma;
  return *this;
 }
@@ -339,7 +340,7 @@ Parametr* Parametr::findParByAxisTitle(std::list<Parametr*> list, String& title)
 
 
 //---------------------------------------------------------------------------
-/*  Series->Title имеет вид:  "Title NSis MarkerSymbol NStructRK AfterComma"
+/*  Series->Title имеет вид:  "Title NSis markerSymbol NStructRK AfterComma"
     фцнкция разбивает Title на параметры
 -----------------------------------------------------------------------------*/
 /*void Parametr::LoadSeriesTitle()
@@ -352,7 +353,7 @@ Parametr* Parametr::findParByAxisTitle(std::list<Parametr*> list, String& title)
    NSis = StrToInt(s.SubString(n+1, 1));
    //---  символ маркера
    s = s.SubString((n+1)+2, 255);
-   MarkerSymbol = s.SubString(0, 1);
+   markerSymbol = s.SubString(0, 1);
 
    //---  разовая команда
    s = s.SubString(3, 255);

@@ -154,13 +154,15 @@ void __fastcall TFormSettings::StringGridMainSelectCell(TObject *Sender,
  int j = FlyingFile::Instance().findPaspByIdent(StringGridMain->Cells[identNum][TekRow]);
 
  // если параметр RK
- if((FlyingFile::Instance().getPtrPaspChart()+j)->Tip == 0 || (FlyingFile::Instance().getPtrPaspChart()+j)->Tip == 1){
+ if((FlyingFile::Instance().getPtrPaspChart()+j)->Tip == 0 || (FlyingFile::Instance().getPtrPaspChart()+j)->Tip == 1)
+ {
     int r = FlyingFile::Instance().findPaspRKByIdent((FlyingFile::Instance().getPtrPaspChart() + j)->Ident);
 
     // проходим по всем паспортам_RK (признак конца NRK_SL == 0)
     AnsiString mRK[33];
     int tekNRK = r;
-    while(tekNRK){
+    while(tekNRK)
+    {
        mRK[(FlyingFile::Instance().getPtrRKChart() + tekNRK)->NRazRK] = (FlyingFile::Instance().getPtrRKChart() + tekNRK)->NameRK;
        tekNRK = (FlyingFile::Instance().getPtrRKChart() + tekNRK)->NRK_SL;
     }
@@ -186,7 +188,6 @@ void __fastcall TFormSettings::StringGridMainDblClick(TObject *Sender)
 {
  if( (TekRow == 0) || (TekRow > Kpar) || (FlyingFile::Instance().getStrData() == NULL) )
      return;
-
  int identNum = findName("Идентификатор");
  int j = FlyingFile::Instance().findPaspByIdent(StringGridMain->Cells[identNum][TekRow]);
  Form1->mainChart->addParametr(j);
@@ -240,17 +241,17 @@ void __fastcall TFormSettings::SpeedButtonRenameClick(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TFormSettings::SpeedButtonOKClick(TObject *Sender)
 {
- AnsiString identName = StringGridMain->Cells[findName("Идентификатор")][TekRow];
+ String identName = StringGridMain->Cells[findName("Идентификатор")][TekRow];
  int j = FlyingFile::Instance().findPaspByIdent(identName);
- if(j < 0)
-   return;
+ if(j < 0) return;
 
- StringGrid1->RowCount++;
- StringGrid1->Cells[0][StringGrid1->RowCount] = identName;
+ //StringGrid1->RowCount++;
+ //StringGrid1->Cells[0][StringGrid1->RowCount] = identName;
 
  // get NRazRK
  (ListBoxRK->ItemIndex < 0) ? Form1->mainChart->addParametr(j) :
                               Form1->mainChart->addParametr(j, ListBoxRK->ItemIndex + 9);
+ Form1->mainChart->printParametrsTo(StringGrid1);
 }
 
 
@@ -419,13 +420,13 @@ void __fastcall TFormSettings::StringGrid1DragDrop(TObject *Sender,
 void __fastcall TFormSettings::StringGrid1DrawCell(TObject *Sender,
       int ACol, int ARow, TRect &Rect, TGridDrawState State)
 {
- if(Form1->mainChart->mainList.begin() == Form1->mainChart->mainList.end())
+ /*if(Form1->mainChart->mainList.begin() == Form1->mainChart->mainList.end())
     return;
- list_it x = Form1->mainChart->mainList.begin();
- std::advance(x, ARow);
+ list_it it = Form1->mainChart->mainList.begin();
+ std::advance(it, ARow);
  StringGrid1->Canvas->FillRect(Rect);
- StringGrid1->Canvas->Font->Color = (*x)->Axis->Axis->Color;
- StringGrid1->Canvas->TextOutA(Rect.Left + 3, Rect.Top + 3, StringGrid1->Cells[ACol][ARow]);
+ StringGrid1->Canvas->Font->Color = (*it)->Axis->Axis->Color;
+ StringGrid1->Canvas->TextOutA(Rect.Left + 3, Rect.Top + 3, StringGrid1->Cells[ACol][ARow]); */
 }
 
 
@@ -722,7 +723,7 @@ void TFormSettings::setAxisSettings()
  curPar->Axis->Ticks->Color = color;
  curPar->Axis->Title->Font->Color = color;
 // curPar->Series->Marks->Visible = CheckBoxMarks->Checked;
- curPar->MarkerSymbol = EditMark->Text;
+ curPar->markerSymbol = EditMark->Text;
 
  // line style
  /*curPar->Series->Pen->Color = color;
@@ -953,7 +954,7 @@ void TFormSettings::getAxisSettings()
          CheckBoxVisible->Checked = !curPar->Axis->Visible;
 
          // маркеры
-         EditMark->Text = curPar->MarkerSymbol;
+         EditMark->Text = curPar->markerSymbol;
 
          //---- разовые команда
          if( curPar->GetTagSeries() )

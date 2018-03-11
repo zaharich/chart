@@ -139,7 +139,7 @@ class myChart
 
     void recognizeButton(TSpeedButton* b, bool checkBoxMouse);
 
-    // asix events
+    // axis events
     void __fastcall chartClickAxis(TCustomChart *Sender,
       TChartAxis *Axis, TMouseButton Button, TShiftState Shift, int X,
       int Y);
@@ -149,8 +149,8 @@ class myChart
       int X, int Y);
     void __fastcall chartMouseUp(TObject *Sender, TMouseButton Button,
       TShiftState Shift, int X, int Y);
-    void __fastcall chartAfterDraw(TObject *Sender);
 
+    void __fastcall chartAfterDraw(TObject *Sender);
     void __fastcall buttonMinMaxOkClick(TObject *Sender);
 };
 #endif

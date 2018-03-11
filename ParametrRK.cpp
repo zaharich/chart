@@ -22,7 +22,7 @@ ParameterRK::ParameterRK(const int nPasp, TChart* chart, const int nRK)
  chart->AddSeries(Series);
 
  Series->SeriesColor = Axis->Axis->Color;
- Series->Title = Axis->Title->Caption;
+ Series->Title = seriesTitle;
  Series->Tag = 1;
 
  SetMinMaxAxis();
@@ -105,7 +105,7 @@ void ParameterRK::SetMinMaxAxis()
 
 
 //---------------------------------------------------------------------------
-/*  Series->Title имеет вид:  "Title NSis MarkerSymbol AfterComma Visible"
+/*  Series->Title имеет вид:  "Title NSis markerSymbol AfterComma Visible"
     фцнкция разбивает строчку Title на параметры
 -----------------------------------------------------------------------------*/
 void ParameterRK::LoadSeriesTitle()
@@ -121,9 +121,9 @@ void ParameterRK::LoadSeriesTitle()
 
    //---  символ маркера
    s = s.SubString((n+1)+2, 255);
-   MarkerSymbol = s.SubString(0, 1);
+   markerSymbol = s.SubString(0, 1);
 
-   //---  разовая команда
+   //---  № структуры RK
    s = s.SubString(3, 255);
    n = s.Pos(" ");
    NStructRK = (s.SubString(1, n-1)).ToInt();       // must be -1 or >=0
@@ -137,7 +137,7 @@ void ParameterRK::LoadSeriesTitle()
    }
 
    //---  кол-во знаков после запятой в виде строчки
-   s = s.SubString(3, 255);
+   s = s.SubString(n+1, 255);
    n = s.Pos(" ");
    afterComma = s.SubString(1, n-1);
 
@@ -156,7 +156,7 @@ void ParameterRK::SaveSeriesTitle()
  int pos = Series->Title.Pos(" ");
  if(pos)
     Series->Title = Series->Title.SubString(1, pos - 1);
- Series->Title = Series->Title + " " + IntToStr(NSis) + " " + MarkerSymbol + " "
+ Series->Title = Series->Title + " " + IntToStr(NSis) + " " + markerSymbol + " "
  + IntToStr(NStructRK) + " " + afterComma + " " + IntToStr(Axis->Visible);
 }
 

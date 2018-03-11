@@ -22,7 +22,7 @@ ParameterFiz::ParameterFiz(const int NPasp, TChart* chart)
  chart->AddSeries(Series);
 
  Series->SeriesColor = Axis->Axis->Color;
- Series->Title = Axis->Title->Caption;
+ Series->Title = seriesTitle;
  Series->Tag = 0;
 
  SetMinMaxAxis();
@@ -90,7 +90,7 @@ void ParameterFiz::SetMinMaxAxis()
 }
 
 
-/*  Series->Title имеет вид:  "Title NSis MarkerSymbol AfterComma Visible"
+/*  Series->Title имеет вид:  "Title NSis markerSymbol AfterComma Visible"
     фцнкция разбивает строчку Title на параметры
 -----------------------------------------------------------------------------*/
 void ParameterFiz::LoadSeriesTitle()
@@ -106,7 +106,7 @@ void ParameterFiz::LoadSeriesTitle()
 
    //---  символ маркера
    s = s.SubString((n+1)+2, 255);
-   MarkerSymbol = s.SubString(0, 1);
+   markerSymbol = s.SubString(0, 1);
 
    //---  кол-во знаков после запятой в виде строчки
    s = s.SubString(3, 255);
@@ -129,7 +129,7 @@ void ParameterFiz::SaveSeriesTitle()
  if(pos)
     Series->Title = Series->Title.SubString(1, pos - 1);
 
- Series->Title = Series->Title + " " + IntToStr(NSis) + " " + MarkerSymbol + " "
+ Series->Title = Series->Title + " " + IntToStr(NSis) + " " + markerSymbol + " "
  + afterComma + " " + IntToStr(Axis->Visible);
 }
 
