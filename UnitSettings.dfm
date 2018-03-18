@@ -24,7 +24,7 @@ object FormSettings: TFormSettings
     Left = 0
     Top = 0
     Width = 1087
-    Height = 580
+    Height = 591
     ActivePage = TabSheet2
     Align = alClient
     Font.Charset = DEFAULT_CHARSET
@@ -48,7 +48,7 @@ object FormSettings: TFormSettings
         Left = 0
         Top = 0
         Width = 425
-        Height = 546
+        Height = 557
         Align = alLeft
         Caption = 'Panel9'
         TabOrder = 0
@@ -289,7 +289,7 @@ object FormSettings: TFormSettings
           Left = 1
           Top = 257
           Width = 423
-          Height = 288
+          Height = 299
           Align = alClient
           Caption = #1057#1077#1090#1082#1072
           Font.Charset = DEFAULT_CHARSET
@@ -301,7 +301,7 @@ object FormSettings: TFormSettings
           TabOrder = 1
           DesignSize = (
             423
-            288)
+            299)
           object Label8: TLabel
             Left = 16
             Top = 40
@@ -455,7 +455,7 @@ object FormSettings: TFormSettings
           end
           object makeAllCheckBox: TCheckBox
             Left = 8
-            Top = 255
+            Top = 266
             Width = 265
             Height = 17
             Anchors = [akLeft, akBottom]
@@ -641,40 +641,42 @@ object FormSettings: TFormSettings
       OnResize = TabSheet2Resize
       OnShow = TabSheet2Resize
       object Splitter1: TSplitter
-        Left = 177
+        Left = 153
         Top = 0
         Width = 3
-        Height = 546
+        Height = 557
         Cursor = crHSplit
       end
       object Splitter2: TSplitter
-        Left = 321
+        Left = 297
         Top = 0
         Width = 3
-        Height = 546
+        Height = 557
         Cursor = crHSplit
         OnMoved = Splitter2Moved
       end
       object Panel1: TPanel
         Left = 0
         Top = 0
-        Width = 177
-        Height = 546
+        Width = 153
+        Height = 557
         Align = alLeft
         Caption = 'Panel1'
+        Constraints.MaxWidth = 153
+        Constraints.MinWidth = 130
         TabOrder = 0
         object Panel5: TPanel
           Left = 1
           Top = 1
-          Width = 175
-          Height = 48
+          Width = 151
+          Height = 45
           Align = alTop
           TabOrder = 0
           object SpeedButtonAdd: TSpeedButton
-            Left = 8
-            Top = 8
-            Width = 37
-            Height = 37
+            Left = 3
+            Top = 5
+            Width = 35
+            Height = 35
             Hint = #1044#1086#1073#1072#1074#1080#1090#1100
             Glyph.Data = {
               360C0000424D360C000000000000360000002800000020000000200000000100
@@ -780,10 +782,10 @@ object FormSettings: TFormSettings
             OnClick = StringGridMainDblClick
           end
           object SpeedButtonDelete: TSpeedButton
-            Left = 48
-            Top = 8
-            Width = 37
-            Height = 37
+            Left = 40
+            Top = 5
+            Width = 35
+            Height = 35
             Hint = #1059#1076#1072#1083#1080#1090#1100
             Glyph.Data = {
               360C0000424D360C000000000000360000002800000020000000200000000100
@@ -889,10 +891,10 @@ object FormSettings: TFormSettings
             OnClick = SpeedButtonDeleteClick
           end
           object SpeedButtonCopy: TSpeedButton
-            Left = 88
-            Top = 8
-            Width = 37
-            Height = 37
+            Left = 77
+            Top = 5
+            Width = 35
+            Height = 35
             Hint = #1050#1086#1087#1080#1088#1086#1074#1072#1090#1100
             Glyph.Data = {
               360C0000424D360C000000000000360000002800000020000000200000000100
@@ -997,10 +999,10 @@ object FormSettings: TFormSettings
             ShowHint = True
           end
           object SpeedButtonRename: TSpeedButton
-            Left = 128
-            Top = 8
-            Width = 37
-            Height = 37
+            Left = 113
+            Top = 5
+            Width = 35
+            Height = 35
             Hint = #1057#1074#1086#1081#1089#1090#1074#1072
             Glyph.Data = {
               360C0000424D360C000000000000360000002800000020000000200000000100
@@ -1108,19 +1110,18 @@ object FormSettings: TFormSettings
         end
         object Panel6: TPanel
           Left = 1
-          Top = 49
-          Width = 175
-          Height = 496
+          Top = 46
+          Width = 151
+          Height = 510
           Align = alClient
           Caption = 'Panel6'
           TabOrder = 1
           object StringGrid1: TStringGrid
             Left = 1
             Top = 1
-            Width = 173
-            Height = 494
+            Width = 149
+            Height = 508
             Align = alClient
-            Color = cl3DLight
             ColCount = 1
             FixedCols = 0
             RowCount = 1
@@ -1136,26 +1137,26 @@ object FormSettings: TFormSettings
         end
       end
       object Panel2: TPanel
-        Left = 324
+        Left = 300
         Top = 0
-        Width = 755
-        Height = 546
+        Width = 779
+        Height = 557
         Align = alClient
         Caption = 'Panel2'
         TabOrder = 1
         object Panel3: TPanel
           Left = 1
           Top = 1
-          Width = 753
-          Height = 48
+          Width = 777
+          Height = 40
           Align = alTop
           TabOrder = 0
           DesignSize = (
-            753
-            48)
+            777
+            40)
           object Label1: TLabel
             Left = 8
-            Top = 21
+            Top = 12
             Width = 67
             Height = 19
             Hint = #1055#1086#1080#1089#1082' '#1087#1086' '
@@ -1164,8 +1165,8 @@ object FormSettings: TFormSettings
             ShowHint = False
           end
           object SpeedButton8: TSpeedButton
-            Left = 713
-            Top = 16
+            Left = 737
+            Top = 8
             Width = 23
             Height = 22
             Anchors = [akTop, akRight]
@@ -1271,10 +1272,16 @@ object FormSettings: TFormSettings
           end
           object editSearch: TEdit
             Left = 264
-            Top = 16
+            Top = 5
             Width = 113
             Height = 27
             Hint = #1042#1074#1077#1076#1080#1090#1077' '#1085#1072#1095#1072#1083#1100#1085#1099#1077' '#1073#1091#1082#1074#1099
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -16
+            Font.Name = 'Cambria'
+            Font.Style = []
+            ParentFont = False
             ParentShowHint = False
             ShowHint = True
             TabOrder = 0
@@ -1282,12 +1289,18 @@ object FormSettings: TFormSettings
           end
           object ComboBox2: TComboBox
             Left = 80
-            Top = 16
+            Top = 5
             Width = 169
             Height = 27
             Style = csDropDownList
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -16
+            Font.Name = 'Cambria'
+            Font.Style = []
             ItemHeight = 19
             ItemIndex = 0
+            ParentFont = False
             TabOrder = 1
             Text = #1048#1076#1077#1085#1090#1080#1092#1080#1082#1072#1090#1086#1088#1091
             Items.Strings = (
@@ -1296,7 +1309,7 @@ object FormSettings: TFormSettings
           end
           object searchButton: TButton
             Left = 392
-            Top = 16
+            Top = 6
             Width = 81
             Height = 25
             Caption = #1055#1086#1080#1089#1082
@@ -1305,20 +1318,19 @@ object FormSettings: TFormSettings
         end
         object Panel4: TPanel
           Left = 1
-          Top = 49
-          Width = 753
-          Height = 496
+          Top = 41
+          Width = 777
+          Height = 515
           Align = alClient
           Caption = #1042#1099#1073#1077#1088#1080#1090#1077' '#1088#1072#1079#1076#1077#1083
           TabOrder = 1
           object StringGridMain: TStringGrid
             Left = 1
             Top = 1
-            Width = 751
-            Height = 494
+            Width = 775
+            Height = 513
             Align = alClient
             BorderStyle = bsNone
-            Color = cl3DLight
             ColCount = 6
             Ctl3D = True
             DefaultColWidth = 90
@@ -1328,7 +1340,7 @@ object FormSettings: TFormSettings
             FixedRows = 0
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clWindowText
-            Font.Height = -19
+            Font.Height = -16
             Font.Name = 'Times New Roman'
             Font.Style = []
             Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goColSizing, goColMoving]
@@ -1360,7 +1372,6 @@ object FormSettings: TFormSettings
               Width = 503
               Height = 24
               Align = alTop
-              Caption = 'RKListPanel'
               TabOrder = 0
               OnMouseDown = RKListPanelMouseDown
               OnMouseMove = RKListPanelMouseMove
@@ -1395,7 +1406,6 @@ object FormSettings: TFormSettings
               Width = 503
               Height = 351
               Align = alClient
-              Color = clMenuBar
               ItemHeight = 19
               TabOrder = 1
               OnDblClick = SpeedButtonOKClick
@@ -1404,10 +1414,10 @@ object FormSettings: TFormSettings
         end
       end
       object ScrollBoxRazdel: TScrollBox
-        Left = 180
+        Left = 156
         Top = 0
         Width = 141
-        Height = 546
+        Height = 557
         Align = alLeft
         TabOrder = 2
         object PanelOfButtonAll: TPanel
@@ -1422,7 +1432,7 @@ object FormSettings: TFormSettings
             Top = 0
             Width = 90
             Height = 25
-            Caption = #1042#1089#1077
+            Caption = #1054#1090#1084#1077#1090#1080#1090#1100' '#1074#1089#1077
             OnClick = ButtonAllClick
           end
         end
@@ -1430,22 +1440,30 @@ object FormSettings: TFormSettings
           Left = 0
           Top = 25
           Width = 137
-          Height = 517
+          Height = 528
           Align = alClient
           Caption = 'Panel7'
           TabOrder = 1
-          object ListBoxRazdel: TListBox
+          object ScrollBox1: TScrollBox
             Left = 1
             Top = 1
             Width = 135
-            Height = 515
+            Height = 526
+            VertScrollBar.Visible = False
             Align = alClient
-            Color = cl3DLight
-            ExtendedSelect = False
-            ItemHeight = 19
-            MultiSelect = True
+            BorderStyle = bsNone
             TabOrder = 0
-            OnClick = ListBoxRazdelClick
+            object CheckListBoxRazdel: TCheckListBox
+              Left = 0
+              Top = 0
+              Width = 135
+              Height = 526
+              Align = alClient
+              ItemHeight = 19
+              TabOrder = 0
+              OnClick = CheckListBoxRazdelClick
+              OnMouseDown = CheckListBoxRazdelMouseDown
+            end
           end
         end
       end
@@ -1455,7 +1473,7 @@ object FormSettings: TFormSettings
       ImageIndex = 2
       DesignSize = (
         1079
-        546)
+        557)
       object Label7: TLabel
         Left = 16
         Top = 216
@@ -1494,7 +1512,7 @@ object FormSettings: TFormSettings
       end
       object ButtonOK: TButton
         Left = 885
-        Top = 824
+        Top = 835
         Width = 75
         Height = 25
         Anchors = [akRight, akBottom]
@@ -1503,7 +1521,7 @@ object FormSettings: TFormSettings
       end
       object Button2: TButton
         Left = 981
-        Top = 824
+        Top = 835
         Width = 75
         Height = 25
         Anchors = [akRight, akBottom]
@@ -1645,7 +1663,7 @@ object FormSettings: TFormSettings
         Left = 201
         Top = 0
         Width = 878
-        Height = 546
+        Height = 557
         Align = alClient
         Caption = 'Panel11'
         TabOrder = 0
@@ -1926,7 +1944,7 @@ object FormSettings: TFormSettings
           Left = 1
           Top = 345
           Width = 876
-          Height = 24
+          Height = 35
           Align = alClient
           Caption = #1056#1072#1079#1086#1074#1072#1103' '#1082#1086#1084#1072#1085#1076#1072
           TabOrder = 2
@@ -2003,7 +2021,7 @@ object FormSettings: TFormSettings
         end
         object GroupBoxGraph: TGroupBox
           Left = 1
-          Top = 369
+          Top = 380
           Width = 876
           Height = 176
           Align = alBottom
@@ -2167,7 +2185,7 @@ object FormSettings: TFormSettings
         Left = 0
         Top = 0
         Width = 201
-        Height = 546
+        Height = 557
         Align = alLeft
         Caption = 'Panel12'
         TabOrder = 1
@@ -2399,7 +2417,7 @@ object FormSettings: TFormSettings
           Left = 1
           Top = 42
           Width = 199
-          Height = 503
+          Height = 514
           Style = lbOwnerDrawFixed
           Align = alClient
           Font.Charset = DEFAULT_CHARSET
@@ -2593,7 +2611,7 @@ object FormSettings: TFormSettings
         Left = 0
         Top = 137
         Width = 1079
-        Height = 409
+        Height = 420
         Align = alClient
         Caption = 'Panel17'
         TabOrder = 1
@@ -2811,17 +2829,17 @@ object FormSettings: TFormSettings
   end
   object Panel10: TPanel
     Left = 0
-    Top = 580
+    Top = 591
     Width = 1087
-    Height = 41
+    Height = 30
     Align = alBottom
     TabOrder = 1
     DesignSize = (
       1087
-      41)
+      30)
     object okButton: TButton
       Left = 893
-      Top = 8
+      Top = 2
       Width = 75
       Height = 25
       Anchors = [akRight, akBottom]
@@ -2837,7 +2855,7 @@ object FormSettings: TFormSettings
     end
     object noButton: TButton
       Left = 989
-      Top = 8
+      Top = 2
       Width = 75
       Height = 25
       Anchors = [akRight, akBottom]

@@ -1,8 +1,8 @@
 object Form1: TForm1
-  Left = 213
-  Top = 153
-  Width = 1332
-  Height = 731
+  Left = 222
+  Top = 125
+  Width = 1171
+  Height = 637
   Caption = 'ChartPro'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -23,33 +23,33 @@ object Form1: TForm1
   PixelsPerInch = 96
   TextHeight = 19
   object Splitter1: TSplitter
-    Left = 1178
+    Left = 1017
     Top = 84
     Width = 3
-    Height = 565
+    Height = 471
     Cursor = crHSplit
     Align = alRight
   end
   object Splitter7: TSplitter
     Left = 0
     Top = 81
-    Width = 1316
+    Width = 1155
     Height = 3
     Cursor = crVSplit
     Align = alTop
   end
   object GroupBox1: TGroupBox
-    Left = 1181
+    Left = 1020
     Top = 84
     Width = 135
-    Height = 565
+    Height = 471
     Align = alRight
     TabOrder = 0
     object PageControl1: TPageControl
       Left = 2
       Top = 21
       Width = 131
-      Height = 542
+      Height = 448
       ActivePage = TabSheet1
       Align = alClient
       MultiLine = True
@@ -63,7 +63,7 @@ object Form1: TForm1
           Left = 0
           Top = 20
           Width = 123
-          Height = 464
+          Height = 370
           Align = alClient
           FileEdit = Edit1
           Font.Charset = DEFAULT_CHARSET
@@ -107,7 +107,7 @@ object Form1: TForm1
           Left = 0
           Top = 0
           Width = 123
-          Height = 484
+          Height = 390
           Align = alClient
           ColCount = 2
           FixedCols = 0
@@ -200,7 +200,7 @@ object Form1: TForm1
   object Panel2: TPanel
     Left = 0
     Top = 0
-    Width = 1316
+    Width = 1155
     Height = 41
     Align = alTop
     ParentShowHint = False
@@ -1250,8 +1250,8 @@ object Form1: TForm1
   end
   object Panel1: TPanel
     Left = 0
-    Top = 649
-    Width = 1316
+    Top = 555
+    Width = 1155
     Height = 24
     Align = alBottom
     Color = clSkyBlue
@@ -1260,7 +1260,7 @@ object Form1: TForm1
   object ToolBar1: TToolBar
     Left = 0
     Top = 41
-    Width = 1316
+    Width = 1155
     Height = 40
     ButtonHeight = 35
     ButtonWidth = 25
@@ -4220,8 +4220,8 @@ object Form1: TForm1
   object TabControl1: TTabControl
     Left = 0
     Top = 84
-    Width = 1178
-    Height = 565
+    Width = 1017
+    Height = 471
     Align = alClient
     PopupMenu = PopupMenuTab
     TabOrder = 4
@@ -4233,8 +4233,8 @@ object Form1: TForm1
     object ScrollBox1: TScrollBox
       Left = 4
       Top = 6
-      Width = 1170
-      Height = 555
+      Width = 1009
+      Height = 461
       Align = alClient
       AutoScroll = False
       TabOrder = 0

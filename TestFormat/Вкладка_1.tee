@@ -1,0 +1,53 @@
+object myChart
+  Left = 0
+  Top = 0
+  Width = 1216
+  Height = 581
+  Legend.Visible = False
+  MarginBottom = 3
+  MarginLeft = 10
+  MarginTop = 2
+  SubTitle.Text.Strings = (
+    '0.283101851851852$0.6240625$0'
+    '0')
+  SubTitle.Visible = False
+  Title.Visible = False
+  BottomAxis.Automatic = False
+  BottomAxis.AutomaticMaximum = False
+  BottomAxis.AutomaticMinimum = False
+  BottomAxis.Axis.Width = 1
+  BottomAxis.DateTimeFormat = 'HH:mm:ss'
+  BottomAxis.Increment = 0.0309964225589226
+  BottomAxis.LabelsSeparation = 0
+  BottomAxis.LabelsSize = 1
+  BottomAxis.Maximum = 0.6240625
+  BottomAxis.Minimum = 0.283101851851852
+  BottomAxis.MinorTickCount = 0
+  BottomAxis.RoundFirstLabel = False
+  LeftAxis.Automatic = False
+  LeftAxis.AutomaticMaximum = False
+  LeftAxis.AutomaticMinimum = False
+  LeftAxis.Axis.Width = 1
+  LeftAxis.Increment = 5
+  LeftAxis.LabelsFont.Color = clAqua
+  LeftAxis.LabelsSeparation = 0
+  LeftAxis.Maximum = 100
+  View3D = False
+  Zoom.Allow = False
+  Align = alClient
+  Color = clAqua
+  PopupMenu = Form1.PopupMenu1
+  TabOrder = 1
+  object TFastLineSeries
+    Marks.Arrow.Visible = True
+    Marks.Callout.Brush.Color = clBlack
+    Marks.Callout.Arrow.Visible = True
+    Marks.Visible = False
+    LinePen.Color = clRed
+    XValues.DateTime = True
+    XValues.Name = 'X'
+    XValues.Order = loAscending
+    YValues.Name = 'Y'
+    YValues.Order = loNone
+  end
+end

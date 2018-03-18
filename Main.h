@@ -323,7 +323,7 @@ public:		// User declarations
  double currentKadr;
  double CutX0, CutX1;                         // значения X Для вырезания временной области
 
- AnsiString SourceDir;                        // директория с программой
+ String SourceDir;                        // директория с программой
 
  std::vector<int> numMode;
  std::vector<String> pathMode;
@@ -331,7 +331,7 @@ public:		// User declarations
 private:
    int getNFreeSeries();                      // count of empty series
 
-   void LoadFlyingFile(const AnsiString& PathToFlyingFile);
+   void LoadFlyingFile(const String& PathToFlyingFile);
    void SaveINI();
 
    void FastBuild();
@@ -358,7 +358,7 @@ private:
    enum {CHART_PAGE, PARAMETER_PAGE, INFO_PAGE, AXIS_PAGE, MAIN_PAGE};
    void openSettingsPage(int nPage);
 
-   int TimeToInt(const AnsiString& S);
+   int TimeToInt(const String& S);
    double IntToTime(const int time);
    bool PrintParameterListToFile(const String* fileName, std::list<Parametr*>::iterator list);
 };

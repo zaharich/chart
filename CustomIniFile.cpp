@@ -3,13 +3,13 @@
 #pragma package(smart_init)
 //---------------------------------------------------------------------------
 
- AnsiString CustomIniFile::dataDir   = "C:\\";
- AnsiString CustomIniFile::formatDir = "C:\\";
- AnsiString CustomIniFile::iniDir    = "C:\\";
- AnsiString CustomIniFile::libDir    = "C:\\";
+ String CustomIniFile::dataDir   = "C:\\";
+ String CustomIniFile::formatDir = "C:\\";
+ String CustomIniFile::iniDir    = "C:\\";
+ String CustomIniFile::libDir    = "C:\\";
 
 // на вход должны подаваться проверенные данные
-CustomIniFile::CustomIniFile(AnsiString& nameIni)
+CustomIniFile::CustomIniFile(String& nameIni)
                 : iniFileName(nameIni)
                 , fileError(0)
 {
@@ -19,7 +19,7 @@ CustomIniFile::CustomIniFile(AnsiString& nameIni)
 
 
 //===========================================================================
-void CustomIniFile::openIni(const AnsiString& nameIni)
+void CustomIniFile::openIni(const String& nameIni)
 {
  if(! FileExists(nameIni)){
      ShowMessage("Файла настройки \"" + nameIni + "\" не найден!");
@@ -138,7 +138,7 @@ void CustomIniFile::showErrMessage(int error, TIniFile* iniFile)
 
 
 //===========================================================================
-void CustomIniFile::saveIniAs(const AnsiString& nameIni)
+void CustomIniFile::saveIniAs(const String& nameIni)
 {
  if(! FileExists(nameIni)){
      FILE* F;

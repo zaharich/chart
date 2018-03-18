@@ -31,7 +31,7 @@ class myLabel :public TLabel
     /** Пишем в лог строку
     *   @param str - строка, которая будет записана в log файл
     */
-    void writeToLog(AnsiString& str);
+    void writeToLog(String& str);
 
     static myLabel* currentLabel;
     static int labelId;
@@ -52,7 +52,7 @@ class myLabel :public TLabel
     __fastcall ~myLabel();
 
     void __fastcall setPosition(int left, int top){Left = left; Top = top;};
-    void __fastcall setCaption(bool visible, AnsiString caption){Visible = visible; Caption = caption;};
+    void __fastcall setCaption(bool visible, String caption){Visible = visible; Caption = caption;};
 
     static myLabel* getCurrentLabel(){return currentLabel;};
     void deleteAllLabels();

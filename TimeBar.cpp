@@ -196,8 +196,8 @@ void TimeBar::centerMove(int delta)
 
 void TimeBar::getMinMaxChart()
 {
-  _minimumChart = chart->getChart()->BottomAxis->Minimum;
-  _maximumChart = chart->getChart()->BottomAxis->Maximum;
+  _minimumChart = chart->BottomAxis->Minimum;
+  _maximumChart = chart->BottomAxis->Maximum;
 }
 
 
@@ -205,8 +205,8 @@ void TimeBar::setMin()
 {
  if(_minimumChart >= _maximumChart)
     return;
- chart->getChart()->BottomAxis->Minimum = _minimumChart;
- chart->getChart()->BottomAxis->Increment = (_maximumChart - _minimumChart) / (chart->getCountVertLine() + 1);
+ chart->BottomAxis->Minimum = _minimumChart;
+ chart->BottomAxis->Increment = (_maximumChart - _minimumChart) / (chart->getCountVertLine() + 1);
 }
 
 
@@ -214,8 +214,8 @@ void TimeBar::setMax()
 {
  if(_minimumChart >= _maximumChart)
     return;
- chart->getChart()->BottomAxis->Maximum = _maximumChart;
- chart->getChart()->BottomAxis->Increment = (_maximumChart - _minimumChart) / (chart->getCountVertLine() + 1);
+ chart->BottomAxis->Maximum = _maximumChart;
+ chart->BottomAxis->Increment = (_maximumChart - _minimumChart) / (chart->getCountVertLine() + 1);
 }
 
 
@@ -229,21 +229,21 @@ void TimeBar::ChartToTimeBar()
  _endPosition = endSplitterPanel->Left - centerPanel->BorderWidth;
 
  // minimum
- float a = (chart->getChart()->BottomAxis->Minimum - FlyingFile::Instance().getSourceMinTime() * SEC);
+ float a = (chart->BottomAxis->Minimum - FlyingFile::Instance().getSourceMinTime() * SEC);
  float b = (FlyingFile::Instance().getSourceMaxTime() - FlyingFile::Instance().getSourceMinTime()) * SEC;
  float partInProcent =  a / b ;
  float change = (_endPosition - _startPosition) * partInProcent;
  startMove(change);
 
  // maximum
- a = (FlyingFile::Instance().getSourceMaxTime()*SEC - chart->getChart()->BottomAxis->Maximum);
+ a = (FlyingFile::Instance().getSourceMaxTime()*SEC - chart->BottomAxis->Maximum);
  partInProcent = a / b;
  change = (_endPosition - _startPosition) * partInProcent;
  endMove(-change);
 }
 
 
-void TimeBar::setCaptionCenterPanel(AnsiString& str)
+void TimeBar::setCaptionCenterPanel(String& str)
 {
  centerPanel->Caption = str;
  centerPanel->Height = mainPanel->Height;

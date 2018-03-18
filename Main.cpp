@@ -29,9 +29,27 @@
 #include <iostream.h>
 #include <fstream.h>
 /*---------------------------------------------------------------------------
-1) Clear Temp folder befor start program
-2) Clear data-series befor start build graph
-3) Create customAxis class
+Error - load format without load flying file
+Error - axis don't change count of step
+
+ToDo - reduce text in main table and in another forms
+ToDo - common Settins (BottomAxis Time or Int, Time for all Tabs and etc.)
+ToDo - UnDo
+ToDo - copy Parameter
+ToDo - copy Tab
+ToDo - move vizirLine to one step, one second
+ToDo - normal install program and updates
+ToDo - make several unitTests
+ToDo - make good algorithm for search parameter
+ToDo - make print
+ToDo - build TXT files
+
+Warning - empty Tab but StringGrid not empty, first parameter from previous Tab visible
+Warning - for each dialogs - each path
+Warning - LibraryFile.cpp #pragma pack(1)
+  ?? FileClassRashetParam.cpp   StrokaTek="rem...";  what is it?
+
+Check - build RK Parameters with TAreaSeries
 //-------------------------------------------------------------------------*/
 #pragma package(smart_init)
 #pragma link "TeeComma"
@@ -69,7 +87,7 @@ __fastcall TForm1::TForm1(TComponent* Owner)
  {
  Log::instance().Write("Record of log is started");
  mainChart = new myChart(ScrollBox1, StringGrid1, PopupMenu1, PopupMenuAxis);
- TeeCommander1->Panel  = mainChart->getChart();
+ TeeCommander1->Panel = mainChart;//->getChart();
  timeBar = new TimeBar(Panel1, mainChart);
 
  char tmp[255];
@@ -92,7 +110,7 @@ __fastcall TForm1::TForm1(TComponent* Owner)
 
  // iniFiles
  iniFileMain = new TIniFile(SourceDir + "\\Chart.ini");
- AnsiString iniFileNameAny = iniFileMain->ReadString("Files", "LastFileIni", "");
+ String iniFileNameAny = iniFileMain->ReadString("Files", "LastFileIni", "");
 
  if(FileExists(iniFileNameAny))
  {
@@ -111,7 +129,7 @@ __fastcall TForm1::TForm1(TComponent* Owner)
  // use default ini file
  else
  {
-     AnsiString iniFileDefault = SourceDir + "\\INI\\iniFileDefault.ini";
+     String iniFileDefault = SourceDir + "\\INI\\iniFileDefault.ini";
      if(! FileExists(iniFileDefault))
      {
          FILE* F;
@@ -134,7 +152,7 @@ __fastcall TForm1::TForm1(TComponent* Owner)
 //==============================================================================
 //           LoadFlyingFile
 //==============================================================================
-void TForm1::LoadFlyingFile(const AnsiString& PathToFlyingFile)
+void TForm1::LoadFlyingFile(const String& PathToFlyingFile)
 {
  FlyingFile::Instance().initFlyingFile(PathToFlyingFile);
  iniFile->DataFile = PathToFlyingFile;
@@ -165,7 +183,7 @@ void __fastcall TForm1::buttonOpenChartClick(TObject *Sender)
 void __fastcall TForm1::FormActivate(TObject *Sender)
 {
  stretch = 0;
- mainChart->getChart()->Repaint();
+ mainChart->Repaint();
 }
 
 //---------------------------------------------------------------------------
@@ -189,7 +207,7 @@ void __fastcall TForm1::SpeedButtonSaveChartClick(TObject *Sender)
     strcpy(Chart_Ini.pathToFormatka, SaveDialogChart->FileName.c_str());
     strcpy(Chart_Ini.pathToFormatka, SaveDialogChart->FileName.c_str());
     // здесь обратно LoatSeriesTitle
-    for(int i=0; i<MKSERIES; i++){     // загружаем NSis
+    for(int i=0; i<MKSERIES; i++){     // загружаем systemNumber
        if(Par[i] != NULL)
           Par[i]->LoatSeriesTitle();
     }
@@ -222,17 +240,17 @@ void __fastcall TForm1::buttonReperLineClick(TObject *Sender)
 {
  if(buttonReperLine->Down){
     // установить начальное положение реперной линии
-    mainChart->getChart()->Canvas->Pen->Color = clBlack;
-    mainChart->getChart()->Canvas->MoveTo(mainChart->getChart()->BottomAxis->IStartPos + 20, mainChart->getChart()->LeftAxis->IStartPos);
-    mainChart->getChart()->Canvas->LineTo(mainChart->getChart()->BottomAxis->IStartPos + 20, mainChart->getChart()->LeftAxis->IEndPos);
-    mainChart->getChart()->Canvas->Pen->Mode = pmCopy;
-    mainChart->getChart()->Canvas->Pen->Color = clWhite;
+    mainChart->Canvas->Pen->Color = clBlack;
+    mainChart->Canvas->MoveTo(mainChart->BottomAxis->IStartPos + 20, mainChart->LeftAxis->IStartPos);
+    mainChart->Canvas->LineTo(mainChart->BottomAxis->IStartPos + 20, mainChart->LeftAxis->IEndPos);
+    mainChart->Canvas->Pen->Mode = pmCopy;
+    mainChart->Canvas->Pen->Color = clWhite;
  }
- mainChart->getChart()->Refresh();
+ mainChart->Refresh();
  mainChart->recognizeButton((TSpeedButton*)Sender, CheckBoxMouse->Checked);
 }
 
-
+//---------------------------------------------------------------------------
 //                      Открыть диалог выбора Шрифта
 //---------------------------------------------------------------------------
 void __fastcall TForm1::BottonFontClick(TObject *Sender)
@@ -240,13 +258,12 @@ void __fastcall TForm1::BottonFontClick(TObject *Sender)
  FontDialog1->Execute();
 }
 
-
 //--------------------------------------------------------------------
 //               Идентификаторы в конце убрать/поставить
 //---------------------------------------------------------------------------
 void __fastcall TForm1::CheckBoxEndIdentClick(TObject *Sender)
 {
- mainChart->getChart()->Repaint();
+ mainChart->Repaint();
 }
 
 
@@ -273,8 +290,8 @@ void __fastcall TForm1::SpeedButtonMoveMouseDown(TObject *Sender,
 
 /*void __fastcall TForm1::buttonZoomInClick(TObject *Sender)
 {
- mainChart->getChart()->Refresh();
- mainChart->getChart()->Canvas->Pen->Color = clBlack;
+ mainChart->Refresh();
+ mainChart->Canvas->Pen->Color = clBlack;
 }   */
 
 
@@ -402,22 +419,22 @@ void TForm1::SaveINI()
 //---------------------------------------------------------------------------
 void __fastcall TForm1::ChartActionPrint1Execute(TObject *Sender)
 {
- int FontPixelPerInch = mainChart->getChart()->Canvas->Font->PixelsPerInch;
- int FontSize = mainChart->getChart()->Canvas->Font->Size;
- int FontHeight = mainChart->getChart()->Canvas->Font->Height;
+ int FontPixelPerInch = mainChart->Canvas->Font->PixelsPerInch;
+ int FontSize = mainChart->Canvas->Font->Size;
+ int FontHeight = mainChart->Canvas->Font->Height;
 
  printing = true;
- mainChart->getChart()->Canvas->Font->Name = "Times New Roman";
- mainChart->getChart()->Canvas->Font->PixelsPerInch = (Edit2->Text).ToInt();
- mainChart->getChart()->Canvas->Font->Size = (Edit5->Text).ToInt();
- mainChart->getChart()->Canvas->Font->Height = (Edit7->Text).ToInt();
+ mainChart->Canvas->Font->Name = "Times New Roman";
+ mainChart->Canvas->Font->PixelsPerInch = (Edit2->Text).ToInt();
+ mainChart->Canvas->Font->Size = (Edit5->Text).ToInt();
+ mainChart->Canvas->Font->Height = (Edit7->Text).ToInt();
 
- TeePreview(Form1, mainChart->getChart());
+ TeePreview(Form1, mainChart);
  printing = false;
 
- mainChart->getChart()->Canvas->Font->PixelsPerInch = FontPixelPerInch;
- mainChart->getChart()->Canvas->Font->Size = FontSize;
- mainChart->getChart()->Canvas->Font->Height = FontHeight;
+ mainChart->Canvas->Font->PixelsPerInch = FontPixelPerInch;
+ mainChart->Canvas->Font->Size = FontSize;
+ mainChart->Canvas->Font->Height = FontHeight;
 }
 
 
@@ -481,11 +498,11 @@ void TForm1::Build()
        EndBuild();
        return;
     }
-    mainChart->getChart()->BottomAxis->SetMinMax(start * SEC, end * SEC);
+    mainChart->BottomAxis->SetMinMax(start * SEC, end * SEC);
  }
  else{
-    start = mainChart->getChart()->BottomAxis->Minimum / SEC + 1;
-    end = mainChart->getChart()->BottomAxis->Maximum / SEC;
+    start = mainChart->BottomAxis->Minimum / SEC + 1;
+    end = mainChart->BottomAxis->Maximum / SEC;
  }
  timeBar->ChartToTimeBar();
 
@@ -542,6 +559,7 @@ void TForm1::Build()
  struct TimXX timXX;
  struct ParamXXChart *ptrParamXXChartTek = NULL;
  char *buf = new char[6 * 1000];     // sizeof(ParamXXXhart) = 6, 1000 - Максимально возможное кол-во параметров в фазе
+ mainChart->ClearAllSeriesData();
  for(;;)
  {
     ReadFile(hFlyingFile, &timXX, sizeTimXX, &bytefact, 0);
@@ -578,15 +596,17 @@ void TForm1::Build()
     {
        for(list_it i = mainChart->mainList.begin(), e = mainChart->mainList.end(); i != e; ++i)
        {
-           if(ptrParamXXChartTek->NPasp == (*i)->NPasp && ptrParamXXChartTek->NSisNClov == (*i)->NSis )
+           if(ptrParamXXChartTek->NPasp == (*i)->paspNumber && ptrParamXXChartTek->NSisNClov == (*i)->systemNumber )
            {
-               if( (*i)->GetTagSeries() )  // RK
+               if( (*i)->GetSeries()->Tag )  // RK
                {
                   if(rk = ((ptrParamXXChartTek->KodFizika.L) >> ((ParameterRK*)&i)->NRK-9) & 1)
-                     (*i)->SeriesAdd(Yt, rk);
+                     //(*i)->SeriesAdd(Yt, rk);
+                     (*i)->GetSeries()->AddXY(Yt, rk);
                }
                else
-                  (*i)->SeriesAdd(Yt, ptrParamXXChartTek->KodFizika.F);
+                  //(*i)->SeriesAdd(Yt, ptrParamXXChartTek->KodFizika.F);
+                  (*i)->GetSeries()->AddXY(Yt, ptrParamXXChartTek->KodFizika.F);
            }
        }
        ++ptrParamXXChartTek;
@@ -633,6 +653,7 @@ void TForm1::FastBuild()
  if(FlyingFile::Instance().getStrData() == NULL) return;
  fseek(FlyingFile::Instance().getStrData(), FlyingFile::Instance().getIndexBlocFileDatXX().IndexBeginPackData, SEEK_SET);
  PtrMinMax = new struct MinMax[KSISTEM * FlyingFile::Instance().getKPasp()];
+ mainChart->ClearAllSeriesData();
 
  // кол-во реальных секунд в упакованных данных
  for(int j = 0, kr = FlyingFile::Instance().getIndexBlocFileDatXX().KRealSecPackData; j < kr; ++j)
@@ -651,7 +672,7 @@ void TForm1::FastBuild()
 
      for(list_it i = mainChart->mainList.begin(), e = mainChart->mainList.end(); i != e; ++i)
      {
-         PtrMinMaxTek = PtrMinMax + ((*i)->NSis - 1) * FlyingFile::Instance().getKPasp() + (*i)->NPasp;
+         PtrMinMaxTek = PtrMinMax + ((*i)->systemNumber - 1) * FlyingFile::Instance().getKPasp() + (*i)->paspNumber;
          if(PtrMinMaxTek->Max.F > no_value || PtrMinMaxTek->Max.F < -no_value ||
             PtrMinMaxTek->Min.F > no_value || PtrMinMaxTek->Min.F < -no_value)
             continue;
@@ -667,7 +688,7 @@ void TForm1::FastBuild()
 
  mainChart->build = 2;
 
- //---- для интервала времени
+ // для интервала времени
  if(CheckBoxWithTime->Checked)
  {
     int start = TimeToInt(EditStartTime->Text);     // начальное время интервала
@@ -716,11 +737,11 @@ void __fastcall TForm1::NAboutClick(TObject *Sender)
  /* выводить на канву текст( букву) шрифтом Wingdings
  /* проблемы: настройка перед печатью, обновление канвы каждый раз после перерисовки */
  /*int a = Par[1]->Series->Count()/5;
- mainChart->getChart()->Canvas->Font->Name = "webdings";
- mainChart->getChart()->Canvas->Font->Color = Par[1]->Series->Color;
- mainChart->getChart()->Canvas->Font->Size = mainChart->getChart()->Canvas->Font->Size + 10;
+ mainChart->Canvas->Font->Name = "webdings";
+ mainChart->Canvas->Font->Color = Par[1]->Series->Color;
+ mainChart->Canvas->Font->Size = mainChart->Canvas->Font->Size + 10;
  for(int i=0; i<5; i++)
-   mainChart->getChart()->Canvas->TextOut(Par[1]->Series->CalcXPos(i*a+1), Par[1]->Series->CalcYPos(i*a+1), "a");       */
+   mainChart->Canvas->TextOut(Par[1]->Series->CalcXPos(i*a+1), Par[1]->Series->CalcYPos(i*a+1), "a");       */
 
 
  // вариант 2
@@ -819,7 +840,7 @@ char txt[256];
 void __fastcall TForm1::buttonFullTimeClick(TObject *Sender)
 {
  if(buttonZoomIn->Down){
-     mainChart->getChart()->Align = alClient;
+     mainChart->Align = alClient;
      return;
  }
  mainChart->setMinMaxIncrementBottomAxis(FlyingFile::Instance().getSourceMinTime(),
@@ -868,7 +889,7 @@ void __fastcall TForm1::FormClose(TObject *Sender, TCloseAction &Action)
 {
  //SaveCurrentTab(SourceDir + "\\Temp\\");
 
- AnsiString dirName = SourceDir + "\\Temp\\";
+ String dirName = SourceDir + "\\Temp\\";
  TSearchRec sr;
 
  if ( !FindFirst(dirName + "\\*.*", faAnyFile, sr)){
@@ -938,7 +959,7 @@ void __fastcall TForm1::NFormatSaveAsClick(TObject *Sender)
  SaveCurrentTab(SourceDir + "\\Temp\\");
  SaveFormatAs();
  // SaveFormatAs -> SaveCurrentTab -> (*i)->SaveSeriesTitle
- // Title заполнен атрибутами NSis markerSymbol NStructRK afterComma visible
+ // Title заполнен атрибутами systemNumber markerSymbol NStructRK afterComma visible
  // необходимо очистить Title
  for(list_it i = mainChart->mainList.begin(); i != mainChart->mainList.end(); ++i)
      (*i)->LoadSeriesTitle();
@@ -1265,10 +1286,10 @@ int TForm1::RepeatTabName(const String& name)
 //---------------------------------------------------------------------------
 void __fastcall TForm1::NRenameTabClick(TObject *Sender)
 {
- PanelRenameTab->Parent = mainChart->getChart();
+ PanelRenameTab->Parent = mainChart;
  PanelRenameTab->Visible = true;
  PanelRenameTab->Top = 20;
- PanelRenameTab->Left = mainChart->getChart()->Width / 2;
+ PanelRenameTab->Left = mainChart->Width / 2;
 
  oldNameEdit->Text = TabControl1->Tabs->Strings[TabControl1->TabIndex];
  newNameEdit->Text = "новая_вкладка";
@@ -1369,14 +1390,14 @@ void __fastcall TForm1::NSaveAsClick(TObject *Sender)
 
 
 
-void CutString(AnsiString** Mass, AnsiString& S, int i)
+void CutString(String** Mass, String& S, int i)
 {
  int b = 0;                          // number of word
  int length = S.Length();
  while(length > 0)
  {
     int n = 1;
-    while(AnsiString(S[n]) == " ")  // find first number symbol not NUll
+    while(String(S[n]) == " ")  // find first number symbol not NUll
     {
        n++;
        if(n >= length)
@@ -1384,7 +1405,7 @@ void CutString(AnsiString** Mass, AnsiString& S, int i)
     }
 
     int s = n;                       // word started with symbol number n...
-    while(AnsiString(S[s]) != " ")
+    while(String(S[s]) != " ")
     {
        s++;
        if(s >= length)
@@ -1392,9 +1413,9 @@ void CutString(AnsiString** Mass, AnsiString& S, int i)
     }                                // ...and ended with symbol nymber s
 
     if( !i)
-       Mass[b] = new AnsiString[50];
+       Mass[b] = new String[50];
 
-    Mass[b][i] = AnsiString(S.SubString(n, s-n));
+    Mass[b][i] = String(S.SubString(n, s-n));
     S = S.SubString(s, length);
     length = S.Length();
     b++;
@@ -1402,7 +1423,7 @@ void CutString(AnsiString** Mass, AnsiString& S, int i)
  return;
 }
 
-void testTxt(AnsiString** Mass)
+void testTxt(String** Mass)
 {
  FILE* test;
  fopen("D:\Резервное_копирование\2014.02.04\_test.txt", "w+");
@@ -1417,7 +1438,7 @@ void __fastcall TForm1::NOpenTxtClick(TObject *Sender)
  OpenDialogTxt->Execute();
  
  char Buf[1024];
- AnsiString **strMass = new AnsiString*[50];
+ String **strMass = new String*[50];
 
  FILE* file;
  file = fopen(OpenDialogTxt->FileName.c_str(), "r+");
@@ -1427,7 +1448,7 @@ void __fastcall TForm1::NOpenTxtClick(TObject *Sender)
      return;
  }
 
- AnsiString S;
+ String S;
  int c = 0;
 
  while(! feof(file))
@@ -1438,7 +1459,7 @@ void __fastcall TForm1::NOpenTxtClick(TObject *Sender)
         return;
     }
     int poz = ftell(file);
-    S = AnsiString(Buf);
+    S = String(Buf);
     S = S.SubString(1, poz - 2);   // убираем символ \n
     CutString(strMass, S, c);
     ++c;
@@ -1511,10 +1532,10 @@ void __fastcall TForm1::NExitClick(TObject *Sender)
 
 void __fastcall TForm1::NnewTab2Click(TObject *Sender)
 {
- PanelRenameTab->Parent = mainChart->getChart();
+ PanelRenameTab->Parent = mainChart;
  PanelRenameTab->Visible = true;
  PanelRenameTab->Top = 20;
- PanelRenameTab->Left = mainChart->getChart()->Width / 2;
+ PanelRenameTab->Left = mainChart->Width / 2;
 
  newNameEdit->Text = "Новая вкладка";
  newNameEdit->SetFocus();
@@ -1547,10 +1568,10 @@ void __fastcall TForm1::NFormatCurrentPropertiesClick(TObject *Sender)
 //------------------------------------------------------------------------------
 void TForm1::openSettingsPage(int nPage)
 {
- int min = mainChart->getChart()->BottomAxis->Minimum;
- int max = mainChart->getChart()->BottomAxis->Maximum;
+ int min = mainChart->BottomAxis->Minimum;
+ int max = mainChart->BottomAxis->Maximum;
  FormSettings->PageControl1->ActivePageIndex = nPage;
- SaveChartToFile(mainChart->getChart(), SourceDir + "\\~copybufferchart", 0, 0);
+ SaveChartToFile(mainChart, SourceDir + "\\~copybufferchart", 0, 0);
  // ShowModal return 1 when click OK on FormSettings, and return 2 when click Отмена
  if(FormSettings->ShowModal() == 1){
     mainChart->printParametrsTo(StringGrid1);
@@ -1594,13 +1615,13 @@ void __fastcall TForm1::FormShow(TObject *Sender)
 
 void __fastcall TForm1::forwardKadrButtonClick(TObject *Sender)
 {
- int X = mainChart->getChart()->Series[0]->CalcXPosValue(mainChart->getChart()->BottomAxis->Minimum + currentKadr);
+ int X = mainChart->Series[0]->CalcXPosValue(mainChart->BottomAxis->Minimum + currentKadr);
  currentKadr += SEC;
 
- mainChart->getChart()->Refresh();
- mainChart->getChart()->Canvas->Pen->Color = clBlack;
- mainChart->getChart()->Canvas->MoveTo(X, mainChart->getChart()->LeftAxis->IStartPos);
- mainChart->getChart()->Canvas->LineTo(X, mainChart->getChart()->LeftAxis->IEndPos);
+ mainChart->Refresh();
+ mainChart->Canvas->Pen->Color = clBlack;
+ mainChart->Canvas->MoveTo(X, mainChart->LeftAxis->IStartPos);
+ mainChart->Canvas->LineTo(X, mainChart->LeftAxis->IEndPos);
 }
 //---------------------------------------------------------------------------
 
@@ -1730,20 +1751,20 @@ void __fastcall TForm1::buttomAddLabelClick(TObject *Sender)
 //==============================================================================
 //    переводит время в формате(hh:mm:ss) в количество секунд
 //==============================================================================
-int TForm1::TimeToInt(const AnsiString& S)
+int TForm1::TimeToInt(const String& S)
 {
    int n = S.Pos(":");
    if(!n)
        return -1;
 
    // hours
-   AnsiString s1 = S.SubString(0, n-1);
+   String s1 = S.SubString(0, n-1);
    if(s1 == "")
        return -1;
    int hou = StrToInt(s1);
 
    // minutes
-   AnsiString s2 = S.SubString(n+1, 255);
+   String s2 = S.SubString(n+1, 255);
    n = s2.Pos(":");
    if(!n)
        return -1;

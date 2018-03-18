@@ -58,22 +58,25 @@ char* Log::getFormatDate(){
   timeinfo = localtime(&rawtime);
 
   strftime (buffer,80,"%Y-%m-%d",timeinfo);
-  AnsiString test = buffer;
+  String test = buffer;
   return buffer;
 }
 
 //---------------------------------------------------------------------------
-void Log::Write(char* logline) {
-  if( FILE *f = fopen(_fileName, "a") ){
+void Log::Write(char* logline)
+{
+  if( FILE *f = fopen(_fileName, "a") )
+  {
     fprintf(f, "%-50s : %30s ", logline, getTime());
     fclose(f);
   }
   else
-    ShowMessage("Can't open file " + AnsiString(_fileName) + ". from class Log");
+    ShowMessage("Can't open file " + String(_fileName) + ". from class Log");
 }
 
 //---------------------------------------------------------------------------
-Log::~Log() {
+Log::~Log()
+{
   Write("Destroy class Log. The end of session");
   delete _fileName;
 }

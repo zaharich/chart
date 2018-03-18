@@ -22,8 +22,10 @@ ParameterFiz::ParameterFiz(const int NPasp, TChart* chart)
  chart->AddSeries(Series);
 
  Series->SeriesColor = Axis->Axis->Color;
- Series->Title = seriesTitle;
+ Series->Title = Axis->Title->Caption;
  Series->Tag = 0;
+ if(countSys > 1)
+   Axis->Title->Caption += " " + StrToInt(systemNumber);
 
  SetMinMaxAxis();
  afterComma = "0.0";
@@ -38,16 +40,16 @@ ParameterFiz::ParameterFiz(TChart* chart, int itemSeries)
 {
  Series = (TFastLineSeries*)chart->SeriesList->Items[itemSeries + 1];           // + 1 because first series always exist for grid
  LoadSeriesTitle();
- NPasp = FlyingFile::Instance().findPaspByIdent(Series->Title);
- if(NPasp >= 0)
+ paspNumber = FlyingFile::Instance().findPaspByIdent(Series->Title);
+ if(paspNumber >= 0)
  {
-    KolSis = CountOfSystem();
-    tekPaspChart = FlyingFile::Instance().getPtrPaspChart() + NPasp;
+    countSys = CountOfSystem();
+    tekPaspChart = FlyingFile::Instance().getPtrPaspChart() + paspNumber;
  }else
  {
-    ShowMessage("Не возможно инициализировать параметр. Обратитесь к разработчику.(NPasp < 0, constructor 2)");
+    ShowMessage("Не возможно инициализировать параметр. Обратитесь к разработчику.(paspNumber < 0, constructor 2)");
     return;
- }   // if npasp  = -1, all the same parameter is build
+ }   // if paspNumber  = -1, all the same parameter is build
      // must be flag-validate parameter
 }
 
@@ -90,19 +92,19 @@ void ParameterFiz::SetMinMaxAxis()
 }
 
 
-/*  Series->Title имеет вид:  "Title NSis markerSymbol AfterComma Visible"
+/*  Series->Title имеет вид:  "Title systemNumber markerSymbol AfterComma Visible"
     фцнкция разбивает строчку Title на параметры
 -----------------------------------------------------------------------------*/
 void ParameterFiz::LoadSeriesTitle()
 {
-   AnsiString s = Series->Title;
+   String s = Series->Title;
 
    //---  титл
    int n = s.Pos(" ");
    Series->Title = s.SubString(1, n-1);
 
    //---  номер системы
-   NSis = StrToInt(s.SubString(n+1, 1));
+   systemNumber = StrToInt(s.SubString(n+1, 1));
 
    //---  символ маркера
    s = s.SubString((n+1)+2, 255);
@@ -129,15 +131,15 @@ void ParameterFiz::SaveSeriesTitle()
  if(pos)
     Series->Title = Series->Title.SubString(1, pos - 1);
 
- Series->Title = Series->Title + " " + IntToStr(NSis) + " " + markerSymbol + " "
+ Series->Title = Series->Title + " " + IntToStr(systemNumber) + " " + markerSymbol + " "
  + afterComma + " " + IntToStr(Axis->Visible);
 }
 
 
 //--------------------------------------------------------------------------
-//   showInfo
+//   ShowInfo
 //--------------------------------------------------------------------------
-void ParameterFiz::showInfo()
+void ParameterFiz::ShowInfo()
 {
  int x = Axis->PosAxis + 15;
  int y = Axis->IStartPos + 15;

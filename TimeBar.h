@@ -35,7 +35,7 @@ class TimeBar : public TComponent
 
      void ChartToTimeBar();
 
-     void setCaptionCenterPanel(AnsiString&);
+     void setCaptionCenterPanel(String&);
 
  private:
     static const double SEC;

@@ -20,12 +20,13 @@
 #include <CheckLst.hpp>
 #include "CSPIN.h"
 #include "TeeComma.hpp"
-#include <typeinfo.h>    // rtti провека допустимости в dynamic_cast 
+#include <typeinfo.h>    // rtti провека допустимости в dynamic_cast
+#include <string>
+#include <vector>
 
 #include "Main.h"
 #include "FlyingFile.h"
 #include "ParametrRK.h"
-//#include "Chart.h"
 
 //---------------------------------------------------------------------------
 class TFormSettings : public TForm
@@ -58,7 +59,6 @@ __published:	// IDE-managed Components
         TPanel *PanelOfButtonAll;
         TSpeedButton *ButtonAll;
         TPanel *Panel7;
-        TListBox *ListBoxRazdel;
         TTabSheet *TabSheet3;
         TLabel *Label7;
         TEdit *EditEndTime;
@@ -201,6 +201,8 @@ __published:	// IDE-managed Components
         TCheckBox *CheckBoxAutoLeft;
         TCheckBox *CheckBoxAutoBottom;
   TButton *testPointSeriesButton;
+        TScrollBox *ScrollBox1;
+        TCheckListBox *CheckListBoxRazdel;
         void __fastcall FormActivate(TObject *Sender);
         void __fastcall editSearchChange(TObject *Sender);
         void __fastcall StringGridMainSelectCell(TObject *Sender, int ACol,
@@ -214,7 +216,6 @@ __published:	// IDE-managed Components
         void __fastcall FormCreate(TObject *Sender);
         void __fastcall ButtonAllClick(TObject *Sender);
         void __fastcall Splitter2Moved(TObject *Sender);
-        void __fastcall ListBoxRazdelClick(TObject *Sender);
         void __fastcall StringGrid1MouseDown(TObject *Sender,
           TMouseButton Button, TShiftState Shift, int X, int Y);
         void __fastcall StringGrid1DragOver(TObject *Sender,
@@ -266,18 +267,22 @@ __published:	// IDE-managed Components
           int X, int Y);
         void __fastcall Button1Click(TObject *Sender);
   void __fastcall testPointSeriesButtonClick(TObject *Sender);
+        void __fastcall CheckListBoxRazdelClick(TObject *Sender);
+        void __fastcall CheckListBoxRazdelMouseDown(TObject *Sender,
+          TMouseButton Button, TShiftState Shift, int X, int Y);
 
 
 private:	// User declarations
-        AnsiString SistemToString(const struct PaspChart *Pasp);
+        String SistemToString(const struct PaspChart *Pasp);
         void packListBoxRazdel();
         void filterRazdel(const String& nameRazdel);
-        void Search(const AnsiString& text);
+        void Search(const String& text);
         int numCol(unsigned sumWidth, unsigned num, unsigned X);
-        int findName(const AnsiString& s);
+        int findName(const String& s);
         void getAxisSettings();
         void setAxisSettings();
         void RowHeight(TStringGrid * G);
+        int countCheckedItems(TCheckListBox* listBox);
 
         int fromNumRow;
         int choiceCol;
@@ -288,11 +293,22 @@ private:	// User declarations
         int X0, Y0;
         TFastLineSeries* Series;
 
+        struct GridNode{
+          std::string ident;
+          std::string name;
+          std::string razdel;
+          std::string zamer;
+          std::string systems;
+        };
+        std::vector<GridNode> v;
+        void PackVectorGridNode();
+        void FillMainStringGrid();
+
 
 public:		// User declarations
         __fastcall TFormSettings(TComponent* Owner);
         void __fastcall OnlyNumbers(char &Key, bool Separator);
-        String __fastcall TrueSeparator(const AnsiString& textEdit);
+        String __fastcall TrueSeparator(const String& textEdit);
 };
 
 //---------------------------------------------------------------------------

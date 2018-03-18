@@ -26,10 +26,10 @@ class Parametr;
 class TimeBar;
 
 //---------------------------------------------------------------------------
-class myChart
+class myChart : public TChart
 {
   private:
-    TChart* chart;
+    //TChart* chart;
     TFastLineSeries* Series1;
 
     // Additional elements
@@ -80,7 +80,7 @@ class myChart
 
   public:
     myChart(TScrollBox* container, TStringGrid* sg, TPopupMenu* menu, TPopupMenu* axisMenu);
-    ~myChart();
+    __fastcall ~myChart();
 
     enum {NO_BUILD, SLOW_BUILD, FAST_BUILD}build;
     std::list<Parametr*> mainList;
@@ -96,17 +96,17 @@ class myChart
 
     // init, save, load, get chart
     void chartInit();
-    TChart* getChart(){return chart;};
+    //TChart* getChart(){return chart;};
     void loadEdit();
     void saveEdit();
     bool openChartFromFile(const String& teeName);
-    void ChartToFile(const AnsiString& pathToFile, bool includeData, bool textFormat);
+    void ChartToFile(const String& pathToFile, bool includeData, bool textFormat);
     void setChartSettings(TChart* destChart, TChart* sourceChart);
 
     void setMinMaxIncrementBottomAxis(int minTime, int maxTime);
     void LinkToGrid(TChartAxis* axis);
     void AxisNewPosition();
-    void clearAllSeries();
+    void ClearAllSeriesData();
 
     // add, delete Parametrs
     void addParametr(int numPasp, int numRK = 0);
@@ -139,7 +139,7 @@ class myChart
 
     void recognizeButton(TSpeedButton* b, bool checkBoxMouse);
 
-    // axis events
+    // asix events
     void __fastcall chartClickAxis(TCustomChart *Sender,
       TChartAxis *Axis, TMouseButton Button, TShiftState Shift, int X,
       int Y);
@@ -149,8 +149,8 @@ class myChart
       int X, int Y);
     void __fastcall chartMouseUp(TObject *Sender, TMouseButton Button,
       TShiftState Shift, int X, int Y);
-
     void __fastcall chartAfterDraw(TObject *Sender);
+
     void __fastcall buttonMinMaxOkClick(TObject *Sender);
 };
 #endif

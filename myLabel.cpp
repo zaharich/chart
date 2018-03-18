@@ -106,7 +106,7 @@ void __fastcall myLabel::editKeyDown(TObject *Sender, WORD &Key,
 //---------------------------------------------------------------------------
 //        log
 //---------------------------------------------------------------------------
-void myLabel::writeToLog(AnsiString& str){
+void myLabel::writeToLog(String& str){
   Log::instance().Write(str.c_str());
 };
 

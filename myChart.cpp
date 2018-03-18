@@ -19,7 +19,8 @@ const double myChart::SEC = 1.0/86400;
 //             myChart
 //==============================================================================
 myChart::myChart(TScrollBox* container, TStringGrid* sg, TPopupMenu* contexMenu, TPopupMenu* axisMenu)
-    : currentPar(NULL)
+    : TChart(container)
+    , currentPar(NULL)
     , stringGrid(sg)
     , zoomButton(false)
     , referButton(false)
@@ -31,41 +32,40 @@ myChart::myChart(TScrollBox* container, TStringGrid* sg, TPopupMenu* contexMenu,
     , countHorizLine(20)
     , countVertLine(10)
     , build(NO_BUILD)
-    , button(0)
 {
-  chart = new TChart(container);
-  chart->Parent = container;
-  chart->Align = alClient;
-  chart->View3D = false;
+  //chart = new TChart(container);
+  Parent = container;
+  Align = alClient;
+  View3D = false;
 
-  Series1 = new TFastLineSeries(chart);          // без Series1 не будет
-  Series1->ParentChart = chart;                  // горизонтальных линий
-  chart->AddSeries(Series1);                     // сетки
+  Series1 = new TFastLineSeries(this);           // без Series1 не будет
+  Series1->ParentChart = this;                  // горизонтальных линий
+  AddSeries(Series1);                     // сетки
   Series1->XValues->DateTime = true;
 
-  chart->Title->Clear();
-  chart->SubTitle->Text->Add(0);
-  chart->SubTitle->Text->Add(0);
+  Title->Clear();
+  SubTitle->Text->Add(0);
+  SubTitle->Text->Add(0);
 
   _contexMenu = contexMenu;
   _axisMenu = axisMenu;
-  chart->PopupMenu = _contexMenu;
+  PopupMenu = _contexMenu;
 
-  chart->OnClickAxis = chartClickAxis;
-  chart->OnMouseDown = chartMouseDown;
-  chart->OnMouseMove = chartMouseMove;
-  chart->OnMouseUp = chartMouseUp;
-  chart->OnAfterDraw = chartAfterDraw;
+  OnClickAxis = chartClickAxis;
+  OnMouseDown = chartMouseDown;
+  OnMouseMove = chartMouseMove;
+  OnMouseUp = chartMouseUp;
+  OnAfterDraw = chartAfterDraw;
 };
 
 
 //==============================================================================
 //         ~myChart
 //==============================================================================
-myChart::~myChart()
+__fastcall myChart::~myChart()
 {
   delete Series1;
-  delete chart;
+  //delete chart;
 };
 
 
@@ -74,38 +74,37 @@ myChart::~myChart()
 //==============================================================================
 void myChart::chartInit()
 {
-  chart->BottomAxis->DateTimeFormat = "HH:mm:ss";
-  chart->BottomAxis->Axis->Width = 1;
-  chart->BottomAxis->Automatic = false;
-  chart->BottomAxis->SetMinMax(0., 1.);
-  chart->BottomAxis->Increment = 1. / (countVertLine + 1);
-  chart->BottomAxis->MinorTickCount = 0;
-  chart->BottomAxis->RoundFirstLabel = false;
-  chart->BottomAxis->LabelsSize = 1;
-  chart->BottomAxis->LabelsSeparation = 0;      // чтобы показывались все линии
-  chart->BottomAxis->PositionUnits = muPercent;
+  BottomAxis->DateTimeFormat = "HH:mm:ss";
+  BottomAxis->Axis->Width = 1;
+  BottomAxis->Automatic = false;
+  BottomAxis->SetMinMax(0., 1.);
+  BottomAxis->Increment = 1. / (countVertLine + 1);
+  BottomAxis->MinorTickCount = 0;
+  BottomAxis->RoundFirstLabel = false;
+  BottomAxis->LabelsSize = 1;
+  BottomAxis->LabelsSeparation = 0;      // чтобы показывались все линии
+  BottomAxis->PositionUnits = muPercent;
 
-  chart->LeftAxis->Axis->Width = 1;
-  chart->LeftAxis->Automatic = false;
-  chart->LeftAxis->SetMinMax(0, LEFTAXISLENGHT);
-  chart->LeftAxis->Increment = 5;
-  chart->LeftAxis->LabelsSeparation = 0;        // чтобы показывались все линии
-  chart->Color = clAqua;
-  chart->LeftAxis->LabelsFont->Color = chart->Color;
+  LeftAxis->Axis->Width = 1;
+  LeftAxis->Automatic = false;
+  LeftAxis->SetMinMax(0, LEFTAXISLENGHT);
+  LeftAxis->Increment = 5;
+  LeftAxis->LabelsSeparation = 0;        // чтобы показывались все линии
+  Color = clAqua;
+  LeftAxis->LabelsFont->Color = Color;
 
-  chart->MarginTop = 2;
-  chart->MarginBottom = 3;
-  chart->MarginRight = 3;
-  chart->MarginLeft = 10;
+  MarginTop = 2;
+  MarginBottom = 3;
+  MarginRight = 3;
+  MarginLeft = 10;
 
-  chart->Zoom->Allow = false;
-  chart->Legend->Visible = false;
-  chart->Title->Visible = false;
-  chart->SubTitle->Visible = false;
+  Zoom->Allow = false;
+  Legend->Visible = false;
+  Title->Visible = false;
+  SubTitle->Visible = false;
 
   stretch = 0;
   button = MOVE;
-  int t = button;
 };
 
 
@@ -114,18 +113,18 @@ void myChart::chartInit()
 //==============================================================================
 void myChart::loadEdit()
 {
- //AnsiString str, bufStr;         // todo          values for this function or two different functions
+ //String str, bufStr;         // todo          values for this function or two different functions
  //int pos = 0;
- for(int i = 0; i < chart->Title->Text->Count; ++i){
-     AnsiString str = chart->Title->Text->Strings[i];
+ for(int i = 0; i < Title->Text->Count; ++i){
+     String str = Title->Text->Strings[i];
      int pos = str.Pos("$") - 1;
-     AnsiString buffStr = str.SubString(0, pos);
+     String buffStr = str.SubString(0, pos);
      bool visible = buffStr.ToInt();
      str = str.SubString(pos + 2, 255);      // +2 чтобы не захватывать разделитель $
 
      pos = str.Pos("$") - 1;
      buffStr = str.SubString(0, pos);
-     AnsiString caption = buffStr;         // Caption
+     String caption = buffStr;         // Caption
      str = str.SubString(pos + 2, 255);
 
      pos = str.Pos("$") - 1;
@@ -140,7 +139,7 @@ void myChart::loadEdit()
      labelList.back()->setPosition(left, top);
  }
  // get edge time from subTitle
- String str = chart->SubTitle->Text->Strings[0];
+ String str = SubTitle->Text->Strings[0];
 
  int pos1 = str.Pos("$") - 1;
  String tmp = str.SubString(0, pos1);
@@ -155,12 +154,12 @@ void myChart::loadEdit()
  str = str.SubString(pos1 + 2, 255);
 
  build = StrToInt(str);
- chart->BottomAxis->SetMinMax(min, max);
+ BottomAxis->SetMinMax(min, max);
 
  // Grid
- countHorizLine = LEFTAXISLENGHT / chart->LeftAxis->Increment - 0.5;
- countVertLine = (chart->BottomAxis->Maximum - chart->BottomAxis->Minimum) /
-                    chart->BottomAxis->Increment - 0.5;
+ countHorizLine = LEFTAXISLENGHT / LeftAxis->Increment - 0.5;
+ countVertLine = (BottomAxis->Maximum - BottomAxis->Minimum) /
+                    BottomAxis->Increment - 0.5;
  int test = 45;
 };
 
@@ -168,24 +167,23 @@ void myChart::loadEdit()
 //==============================================================================
 //            ChartToFile
 //==============================================================================
-void myChart::ChartToFile(const AnsiString& pathToTeeFile, bool includeData, bool textFormat)
+void myChart::ChartToFile(const String& pathToTeeFile, bool includeData, bool textFormat)
 {
  // save position and caption of text(labels) on chart. Format("Visible$Caption$Left$Top")
- chart->Title->Clear();
+ Title->Clear();
  for(std::list<myLabel*>::iterator i = labelList.begin(); i != labelList.end(); ++i){
-    chart->Title->Text->Add( AnsiString( IntToStr((*i)->Visible) + "$" +
+    Title->Text->Add( String( IntToStr((*i)->Visible) + "$" +
     (*i)->Caption + "$" + (*i)->Left + "$" + (*i)->Top) );
  }
 
  // save min-max of bottom axis and build type(no, slow, quick). Format("min$max$build")
- chart->SubTitle->Text->Strings[0] = FloatToStr(chart->BottomAxis->Minimum)
-         + "$" + FloatToStr(chart->BottomAxis->Maximum) + "$" + IntToStr(build);
+ SubTitle->Text->Strings[0] = FloatToStr(BottomAxis->Minimum)
+         + "$" + FloatToStr(BottomAxis->Maximum) + "$" + IntToStr(build);
 
- // save parametr settings. Format("Title Nsis markerSymbol NStructRK afterComma Visible")
+ // save parametr settings. Format("Title Nsis MarkerSymbol NStructRK afterComma Visible")
  for(list_it i = mainList.begin(); i != mainList.end(); ++i)
      (*i)->SaveSeriesTitle();
-
- SaveChartToFile(chart, pathToTeeFile, includeData, textFormat);    // встроенная
+ SaveChartToFile(this, pathToTeeFile, includeData, textFormat);    // встроенная
 };
 
 
@@ -204,17 +202,17 @@ bool myChart::openChartFromFile(const String& teeName)
      return false;
  }
 
- LoadChartFromFile(dynamic_cast<TCustomChart*>(chart), teeName);   // встроенная
+ LoadChartFromFile(dynamic_cast<TCustomChart*>(this), teeName);   // встроенная
  loadEdit();
 
  // create
- for(int i = 0; i < (chart->SeriesList->Count - 1); ++i)
+ for(int i = 0; i < (SeriesList->Count - 1); ++i)
  {
      Parametr* p;
-     if(chart->SeriesList->Items[i+1]->Tag)
-        p = new ParameterRK(chart, i);
+     if(SeriesList->Items[i+1]->Tag)
+        p = new ParameterRK(this, i);
      else
-        p = new ParameterFiz(chart, i);
+        p = new ParameterFiz(this, i);
      mainList.push_back(p);
  }
  timeBar->ChartToTimeBar();
@@ -228,8 +226,8 @@ bool myChart::openChartFromFile(const String& teeName)
 void myChart::setMinMaxIncrementBottomAxis(int minTime, int maxTime){
  if( (minTime < 0) || (maxTime < 0) || (minTime >= maxTime) )
     return;
- chart->BottomAxis->SetMinMax(minTime * SEC, maxTime * SEC);
- chart->BottomAxis->Increment = ((maxTime - minTime) * SEC) / (countVertLine + 1);
+ BottomAxis->SetMinMax(minTime * SEC, maxTime * SEC);
+ BottomAxis->Increment = ((maxTime - minTime) * SEC) / (countVertLine + 1);
 };
 
 
@@ -240,12 +238,12 @@ void myChart::addParametr(int numPasp, int numRK)
 {
  if(numRK > 0)
  {
-    ParameterRK *pr = new ParameterRK(numPasp, chart, numRK);
+    ParameterRK *pr = new ParameterRK(numPasp, this, numRK);
     mainList.push_back(pr);
  }
  else if(numRK == 0)
  {
-    ParameterFiz *pf = new ParameterFiz(numPasp, chart);
+    ParameterFiz *pf = new ParameterFiz(numPasp, this);
     mainList.push_back(pf);
  }
 };
@@ -296,9 +294,9 @@ void myChart::deleteAllParametrs()
 //==============================================================================
 void myChart::printParametrsTo()
 {
- AnsiString str = "";
+ String str = "";
  for(list_it i = mainList.begin(); i != mainList.end(); ++i)
-    str += (*i)->GetSeriesTitle() + "; ";
+    str += (*i)->GetSeries()->Title + "; ";
  ShowMessage(str);
 };
 
@@ -306,8 +304,7 @@ void myChart::printParametrsTo(TStringGrid* dest)
 {
  dest->RowCount = 0;
  int i = 0;
- for(list_it b = mainList.begin(), e = mainList.end(); b != e; ++b)
- {
+ for(list_it b = mainList.begin(), e = mainList.end(); b != e; ++b){
     dest->RowCount++;
     dest->Cells[0][i++] = (*b)->Axis->Title->Caption;
  }
@@ -356,11 +353,10 @@ void __fastcall myChart::chartClickAxis(TCustomChart *Sender,
      return;
 
  currentPar = findParByAxis(Axis);
- currentPar->showInfo();
+ currentPar->ShowInfo();
 
  // control by button;
- if(button != NONE)
- {
+ if(button != NONE){
     if(button == DEL){
       deleteParametr(currentPar->Axis);
       return;
@@ -373,7 +369,7 @@ void __fastcall myChart::chartClickAxis(TCustomChart *Sender,
        currentPar->Axis->Visible = false;
  }
 
- chart->PopupMenu = _axisMenu;
+ PopupMenu = _axisMenu;
 
  AxisMin = Axis->Minimum;
  AxisMax = Axis->Maximum;
@@ -393,38 +389,37 @@ void __fastcall myChart::chartClickAxis(TCustomChart *Sender,
 void __fastcall myChart::chartMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
- if(currentPar)
- {
-    currentPar->slimAxis();
-    //currentPar = NULL;
+ if(currentPar){
+    currentPar->SlimAxis();
+    currentPar = NULL;
  }
  X0 = X;  Y0 = Y;
 
- if(Button == mbLeft && chart->ChartRect.Left < X   &&    // выделение мышью
-                        X < chart->ChartRect.Right  &&    // временного отрезка
+ if(Button == mbLeft && ChartRect.Left < X   &&    // выделение мышью
+                        X < ChartRect.Right  &&    // временного отрезка
                         ! referButton               &&
-                        chart->ChartRect.Top < Y    &&    // обрамление черным
-                        Y < chart->ChartRect.Bottom &&    // цветом
-                        chart->SeriesCount() > 1      )   //
+                        ChartRect.Top < Y    &&    // обрамление черным
+                        Y < ChartRect.Bottom &&    // цветом
+                        SeriesCount() > 1      )   //
  {
     double no;
-    chart->SeriesList->Items[0]->GetCursorValues(CutX0, no);  // все равно к какой серии применять GetCursorValues
-    //chart->Canvas->Pen->Mode = pmNotXor;                      // потому что все привязаны к нижней оси, а второй параметр не нужен
-    //chart->Canvas->Brush->Style = bsClear;
-    //chart->Canvas->Brush->Color = clBlack;
+    SeriesList->Items[0]->GetCursorValues(CutX0, no);  // все равно к какой серии применять GetCursorValues
+    //Canvas->Pen->Mode = pmNotXor;                      // потому что все привязаны к нижней оси, а второй параметр не нужен
+    //Canvas->Brush->Style = bsClear;
+    //Canvas->Brush->Color = clBlack;
 
-    //chart->Canvas->TextOutA(X, chart->LeftAxis->IEndPos + 6, ((TDateTime)CutX0).TimeString());
+    //Canvas->TextOutA(X, LeftAxis->IEndPos + 6, ((TDateTime)CutX0).TimeString());
  }
  else{
-     chart->Canvas->Pen->Mode = pmCopy;
-     chart->Canvas->Brush->Color = clWhite;
+     Canvas->Pen->Mode = pmCopy;
+     Canvas->Brush->Color = clWhite;
  }
 
  if(Button == mbRight)
-    chart->PopupMenu = zoomButton ? NULL : _contexMenu;
+    PopupMenu = zoomButton ? NULL : _contexMenu;
 
  cutIntervalButton = false;
- chart->Refresh();
+ Refresh();
  mouseDown = true;
 };
 
@@ -437,6 +432,7 @@ void myChart::AxisMove(double dy, double dx)
   currentPar->Axis->StartPosition += dy;
   currentPar->Axis->EndPosition += dy;
   currentPar->Axis->PositionPercent += dx;
+  //currentPar->ShowInfo();
 };
 
 
@@ -450,14 +446,14 @@ void myChart::AxisStretch(int PixelInCell, int y1)
     Y0 = y1;
     v = floor((AxisMax - AxisMin) / currentPar->Axis->Increment + 1 + 0.5);
     currentPar->Axis->Increment = (currentPar->Axis->Maximum - currentPar->Axis->Minimum) / v;
-    currentPar->Axis->StartPosition = currentPar->Axis->StartPosition - chart->LeftAxis->Increment;
+    currentPar->Axis->StartPosition = currentPar->Axis->StartPosition - LeftAxis->Increment;
  }
  if((Y0 - y1) < -PixelInCell){
     if((currentPar->Axis->Maximum - currentPar->Axis->Increment) <= currentPar->Axis->Minimum) return;
     Y0 = y1;
     v = floor((AxisMax - AxisMin) / currentPar->Axis->Increment - 1 + 0.5);
     currentPar->Axis->Increment = (currentPar->Axis->Maximum - currentPar->Axis->Minimum) / v;
-    currentPar->Axis->StartPosition = currentPar->Axis->StartPosition + chart->LeftAxis->Increment;
+    currentPar->Axis->StartPosition = currentPar->Axis->StartPosition + LeftAxis->Increment;
  }
 };
 
@@ -471,14 +467,14 @@ void myChart::MoveMaxMinAxis(const int PixelInCell, int y, const bool UpHalfAxis
     if((Y0 - y) > PixelInCell){
        Y0 = y;
        currentPar->Axis->Maximum = currentPar->Axis->Maximum + AxisIncrement;
-       currentPar->Axis->StartPosition = currentPar->Axis->StartPosition - chart->LeftAxis->Increment;
+       currentPar->Axis->StartPosition = currentPar->Axis->StartPosition - LeftAxis->Increment;
     }
     if((Y0 - y) < -PixelInCell){
        if((currentPar->Axis->Maximum - currentPar->Axis->Increment) <= currentPar->Axis->Minimum)
           return;
        Y0 = y;
        currentPar->Axis->Maximum = currentPar->Axis->Maximum - AxisIncrement;
-       currentPar->Axis->StartPosition = currentPar->Axis->StartPosition + chart->LeftAxis->Increment;
+       currentPar->Axis->StartPosition = currentPar->Axis->StartPosition + LeftAxis->Increment;
     }
  }
  else{
@@ -487,12 +483,12 @@ void myChart::MoveMaxMinAxis(const int PixelInCell, int y, const bool UpHalfAxis
           return;
        Y0 = y;
        currentPar->Axis->Minimum = currentPar->Axis->Minimum + AxisIncrement;
-       currentPar->Axis->EndPosition = currentPar->Axis->EndPosition - chart->LeftAxis->Increment;
+       currentPar->Axis->EndPosition = currentPar->Axis->EndPosition - LeftAxis->Increment;
     }
     if((Y0 - y) < -PixelInCell){
        Y0 = y;
        currentPar->Axis->Minimum = currentPar->Axis->Minimum - AxisIncrement;
-       currentPar->Axis->EndPosition = currentPar->Axis->EndPosition + chart->LeftAxis->Increment;
+       currentPar->Axis->EndPosition = currentPar->Axis->EndPosition + LeftAxis->Increment;
     }
  }
 };
@@ -506,53 +502,52 @@ void __fastcall myChart::chartMouseMove(TObject *Sender, TShiftState Shift,
 {
  // draw zoom rectangle
  if(zoomButton){
-    chart->Repaint();
-    chart->Canvas->Brush->Style = bsClear;
-    chart->Canvas->Rectangle(X - (chart->Width >> 2) / (kzoom + 1), Y - (chart->Height >> 2) / (kzoom + 1),
-                             X + (chart->Width >> 2) / (kzoom + 1), Y + (chart->Height >> 2) / (kzoom + 1));
+    Repaint();
+    Canvas->Brush->Style = bsClear;
+    Canvas->Rectangle(X - (Width >> 2) / (kzoom + 1), Y - (Height >> 2) / (kzoom + 1),
+                             X + (Width >> 2) / (kzoom + 1), Y + (Height >> 2) / (kzoom + 1));
     return;
  }
 
  // при наведении на шкалу, она подсвечивается
- for(list_it i = mainList.begin(); i != mainList.end(); ++i)
- {
+ for(list_it i = mainList.begin(); i != mainList.end(); ++i){
     if( (*i)->Axis->Clicked(X, Y) )
-       (*i)->fullAxis();
+       (*i)->FullAxis();
     else
-       (*i)->slimAxis();
+       (*i)->SlimAxis();
  }
 
  // курсор в поле графиков
- if(chart->ChartRect.Left < X && X < chart->ChartRect.Right  &&
-    chart->ChartRect.Top < Y  && Y < chart->ChartRect.Bottom &&
-                                      chart->SeriesCount() > 1)
+ if(ChartRect.Left < X && X < ChartRect.Right  &&
+    ChartRect.Top < Y  && Y < ChartRect.Bottom &&
+                                      SeriesCount() > 1)
  {
     if(mouseDown && X0 != X){
        if(! referButton){      // выделение интервала
-          chart->Refresh();
-          chart->Canvas->Pen->Mode = pmNotXor;
-          chart->Canvas->Brush->Color = clBlack;
-          chart->Canvas->Rectangle(X0, chart->LeftAxis->IStartPos, X, chart->LeftAxis->IEndPos);
+          Refresh();
+          Canvas->Pen->Mode = pmNotXor;
+          Canvas->Brush->Color = clBlack;
+          Canvas->Rectangle(X0, LeftAxis->IStartPos, X, LeftAxis->IEndPos);
 
           double y;
-          chart->SeriesList->Items[1]->GetCursorValues(CutX1, y);
-          chart->Canvas->Brush->Color = clWhite;
-          chart->Canvas->TextOutA(X, chart->LeftAxis->IEndPos + 6, ((TDateTime)CutX1).TimeString());
-          chart->Canvas->TextOutA(X0, chart->LeftAxis->IEndPos + 6, ((TDateTime)CutX0).TimeString());
+          SeriesList->Items[1]->GetCursorValues(CutX1, y);
+          Canvas->Brush->Color = clWhite;
+          Canvas->TextOutA(X, LeftAxis->IEndPos + 6, ((TDateTime)CutX1).TimeString());
+          Canvas->TextOutA(X0, LeftAxis->IEndPos + 6, ((TDateTime)CutX0).TimeString());
 
           cutIntervalButton = true;
           return;
        }
        else{                     // визирная линия
           double x, y;
-          chart->SeriesList->Items[0]->GetCursorValues(x, y);
-          chart->Refresh();
-          chart->Canvas->Pen->Color = clBlack;   // for black refer line
-          chart->Canvas->MoveTo(X, chart->LeftAxis->IStartPos);
-          chart->Canvas->LineTo(X, chart->LeftAxis->IEndPos);
+          SeriesList->Items[0]->GetCursorValues(x, y);
+          Refresh();
+          Canvas->Pen->Color = clBlack;   // for black refer line
+          Canvas->MoveTo(X, LeftAxis->IStartPos);
+          Canvas->LineTo(X, LeftAxis->IEndPos);
 
-          chart->Canvas->Pen->Color = clWhite;
-          chart->Canvas->TextOutA(X, chart->LeftAxis->IEndPos + 6, ((TDateTime)x).TimeString());
+          Canvas->Pen->Color = clWhite;
+          Canvas->TextOutA(X, LeftAxis->IEndPos + 6, ((TDateTime)x).TimeString());
 
           for(list_it i = mainList.begin(), e = mainList.end(); i != e; ++i){
               if((*i)->GetSeries()->Count())
@@ -560,28 +555,28 @@ void __fastcall myChart::chartMouseMove(TObject *Sender, TShiftState Shift,
                    int ct = (*i)->GetSeries()->Count();
                    float pr = (x - (*i)->GetSeries()->MinXValue()) / (float((*i)->GetSeries()->MaxXValue()) - (float)(*i)->GetSeries()->MinXValue());
                    float y7 = (*i)->GetSeries()->YValue[pr * ct];
-                   chart->Canvas->TextOutA(X, (*i)->GetSeries()->CalcYPos(pr * ct), FormatFloat((*i)->afterComma, y7));
+                   Canvas->TextOutA(X, (*i)->GetSeries()->CalcYPos(pr * ct), FormatFloat((*i)->afterComma, y7));
               }
           }
           return;
        }
     }
     else{        //    вывод численных значений
-       if(chart->SeriesCount() > 1 && !referButton && !cutIntervalButton && !building){
+       if(SeriesCount() > 1 && !referButton && !cutIntervalButton && !building){
            // чтобы не работало в пустых зонах
-           int k = chart->SeriesList->Items[1]->Count();
+           int k = SeriesList->Items[1]->Count();
            if( k < 1 ) return;
-           int x0 = chart->SeriesList->Items[1]->CalcXPos(1);
-           int x1 = chart->SeriesList->Items[1]->CalcXPos(k-1);
+           int x0 = SeriesList->Items[1]->CalcXPos(1);
+           int x1 = SeriesList->Items[1]->CalcXPos(k-1);
            if(X < x0 || X > x1 )
                return;
                
            double x, y;
-           chart->SeriesList->Items[1]->GetCursorValues(x, y);
-           chart->Refresh();
-           chart->Canvas->Pen->Color = clGray;
-           chart->Canvas->MoveTo(X, chart->LeftAxis->IStartPos);
-           chart->Canvas->LineTo(X, chart->LeftAxis->IEndPos);
+           SeriesList->Items[1]->GetCursorValues(x, y);
+           Refresh();
+           Canvas->Pen->Color = clGray;
+           Canvas->MoveTo(X, LeftAxis->IStartPos);
+           Canvas->LineTo(X, LeftAxis->IEndPos);
 
            int j = 0, countPoints = 0;
            float procent;
@@ -604,20 +599,17 @@ void __fastcall myChart::chartMouseMove(TObject *Sender, TShiftState Shift,
  }
 
  // выбрана ось
- if(SelectAxis)
- {
-    double dy = (LEFTAXISLENGHT / chart->LeftAxis->IAxisSize) * (Y - Y0),
-           dx = (LEFTAXISLENGHT / chart->BottomAxis->IAxisSize) * (X - X0);
-    int PixelInCell = chart->LeftAxis->IAxisSize / (LEFTAXISLENGHT / chart->LeftAxis->Increment);
+ if(SelectAxis){
+    double dy = (LEFTAXISLENGHT / LeftAxis->IAxisSize) * (Y - Y0),
+           dx = (LEFTAXISLENGHT / BottomAxis->IAxisSize) * (X - X0);
+    int PixelInCell = LeftAxis->IAxisSize / (LEFTAXISLENGHT / LeftAxis->Increment);
 
     if(button == STRETCH)   // растяжка оси одинакова в двух режимах
        AxisStretch(PixelInCell, Y);
-    else
-    {  // УПРАВЛЕНИЕ КНОПКАМИ
-       if(button != NONE)
-       {
-          if(button == MOVE)
-          {
+    else{
+       // УПРАВЛЕНИЕ КНОПКАМИ
+       if(button != NONE){
+          if(button == MOVE){
               AxisMove(dy, dx);
               X0 = X; Y0 =Y;
           }
@@ -626,8 +618,7 @@ void __fastcall myChart::chartMouseMove(TObject *Sender, TShiftState Shift,
        }
        // УПРАВЛЕНИЕ ТОЛЬКО МЫШЬЮ
        else{
-          if(stretch != 3)
-          {
+          if(stretch != 3){
              AxisMove(dy, dx);
              X0 = X; Y0 =Y;
           }
@@ -647,8 +638,7 @@ void __fastcall myChart::chartMouseMove(TObject *Sender, TShiftState Shift,
 void __fastcall myChart::chartMouseUp(TObject *Sender, TMouseButton Button,
       TShiftState Shift, int X, int Y)
 {
- if(SelectAxis)
- {
+ if(SelectAxis){
     if(linkAxisButton)
         LinkToGrid(currentPar->Axis);
     if(stretch == 2 || stretch == 3)
@@ -662,28 +652,27 @@ void __fastcall myChart::chartMouseUp(TObject *Sender, TMouseButton Button,
  mouseDown = false;
  SelectAxis = false;
 
- if(zoomButton)
- {
-    if(Button == mbLeft && kzoom < 3)
-    {
+ // ZOOM - ZOOM
+ if(zoomButton){
+    if(Button == mbLeft && kzoom < 3){
        ++kzoom;
-       chart->Align = alNone;
-       chart->Width *= 2;
-       chart->Height *= 2;
-       ((TScrollBox*)chart->Parent)->HorzScrollBar->Position = 2*X - chart->Width / (4*kzoom);
-       ((TScrollBox*)chart->Parent)->VertScrollBar->Position = 2*Y - chart->Height / (4*kzoom);
-       chart->Canvas->Font->Size << 1;
+       Align = alNone;
+       Width *= 2;
+       Height *= 2;
+       ((TScrollBox*)Parent)->HorzScrollBar->Position = 2*X - Width / (4*kzoom);
+       ((TScrollBox*)Parent)->VertScrollBar->Position = 2*Y - Height / (4*kzoom);
+       Canvas->Font->Size << 1;
     }
     if(Button == mbRight && kzoom > 0){
        --kzoom;
-       chart->Width /= 2;
-       chart->Height /= 2;
-       chart->Canvas->Font->Size >> 1;
+       Width /= 2;
+       Height /= 2;
+       Canvas->Font->Size >> 1;
     }
 
-    chart->Refresh();
+    Refresh();
     //TabControl1->PopupMenu = NULL;
-    ((TTabControl*)((chart->Parent)->Parent))->PopupMenu = NULL;
+    ((TTabControl*)((Parent)->Parent))->PopupMenu = NULL;
     return;
  }
 };
@@ -693,8 +682,8 @@ void __fastcall myChart::chartMouseUp(TObject *Sender, TMouseButton Button,
 //          LinkToGrid
 //==============================================================================
 void myChart::LinkToGrid(TChartAxis *Axis){
-   double delta = chart->LeftAxis->Increment;
-   //double heightGridCell = chart->LeftAxis->IAxisSize / countMainHorizLine;
+   double delta = LeftAxis->Increment;
+   //double heightGridCell = LeftAxis->IAxisSize / countMainHorizLine;
    double lengthAxisInProcent = Axis->EndPosition - Axis->StartPosition;
    int a = (Axis->StartPosition + 0.5 * delta) / delta;    // округление за счет
    Axis->StartPosition = a*delta;
@@ -721,15 +710,15 @@ void myChart::AxisNewPosition()
     TChartAxis* a = (*b)->Axis;
     double oldIncrement = ( a->EndPosition - a->StartPosition ) / (*b)->axisSizeInCell;
     double hightAboveFloor = ( 100 - a->EndPosition ) / oldIncrement;
-    a->EndPosition = 100 - ( hightAboveFloor * chart->LeftAxis->Increment );
-    a->StartPosition = a->EndPosition - ( chart->LeftAxis->Increment * (*b)->axisSizeInCell );
+    a->EndPosition = 100 - ( hightAboveFloor * LeftAxis->Increment );
+    a->StartPosition = a->EndPosition - ( LeftAxis->Increment * (*b)->axisSizeInCell );
 
     // shift axis X position
     if( a->EndPosition < 5 ){
        if( shift ){
           a->EndPosition = shiftEndPosition;
-          a->StartPosition = a->EndPosition - ( chart->LeftAxis->Increment * (*b)->axisSizeInCell );
-          shiftEndPosition = a->StartPosition - chart->LeftAxis->Increment;
+          a->StartPosition = a->EndPosition - ( LeftAxis->Increment * (*b)->axisSizeInCell );
+          shiftEndPosition = a->StartPosition - LeftAxis->Increment;
           if(a->StartPosition < -10)
              shift = false;
        }
@@ -737,8 +726,8 @@ void myChart::AxisNewPosition()
           axisDeltaHorizontal += -4;
           shift = true;
           a->EndPosition = shiftEndPosition;
-          a->StartPosition = a->EndPosition - ( chart->LeftAxis->Increment * (*b)->axisSizeInCell );
-          shiftEndPosition = a->StartPosition - chart->LeftAxis->Increment;
+          a->StartPosition = a->EndPosition - ( LeftAxis->Increment * (*b)->axisSizeInCell );
+          shiftEndPosition = a->StartPosition - LeftAxis->Increment;
        }
     }
     else{
@@ -748,8 +737,8 @@ void myChart::AxisNewPosition()
     a->PositionPercent += axisDeltaHorizontal;
 
     // shift chart margin
-    if( a->PositionPercent < -(chart->MarginLeft + 2)){
-       chart->MarginLeft += 3;
+    if( a->PositionPercent < -(MarginLeft + 2)){
+       MarginLeft += 3;
     }
  }
 }
@@ -802,7 +791,7 @@ void __fastcall myChart::chartAfterDraw(TObject *Sender)
                 Chart1->Canvas->Font->Size = -12;
              Chart1->Canvas->Font->Color = Par[i]->Series->Color;
              for(int j=0; j<6; j++)
-                Chart1->Canvas->TextOut(Par[i]->Series->CalcXPos(j*a+1), Par[i]->Series->CalcYPos(j*a+1)-15, Par[i]->markerSymbol);
+                Chart1->Canvas->TextOut(Par[i]->Series->CalcXPos(j*a+1), Par[i]->Series->CalcYPos(j*a+1)-15, Par[i]->MarkerSymbol);
           }
        }
     }
@@ -811,10 +800,10 @@ void __fastcall myChart::chartAfterDraw(TObject *Sender)
  // Печать
  if(printing){
     for(int i = 0; i < 3; ++i){
-      chart->Canvas->Font->Name = "Times New Roman";
-      chart->Canvas->Font->PixelsPerInch = 96;                                 //(Edit2->Text).ToInt();
-      chart->Canvas->Font->Height = -2;                                        // (Edit7->Text).ToInt();
-      //chart->Canvas->TextOut(label[i]->Left, label[i]->Top, label[i]->Caption);
+      Canvas->Font->Name = "Times New Roman";
+      Canvas->Font->PixelsPerInch = 96;                                 //(Edit2->Text).ToInt();
+      Canvas->Font->Height = -2;                                        // (Edit7->Text).ToInt();
+      //Canvas->TextOut(label[i]->Left, label[i]->Top, label[i]->Caption);
     }
     for(list_it i = mainList.begin(); i != mainList.end(); ++i)
         (*i)->DrawTitle(false, kzoom);
@@ -884,13 +873,13 @@ void __fastcall myChart::buttonMinMaxOkClick(TObject *Sender)
 //==============================================================================
 void myChart::labelInfoOn()
 {
- labelInfo = new TLabel(chart);
- labelInfo->Parent = chart;
+ labelInfo = new TLabel(this);
+ labelInfo->Parent = this;
  labelInfo->Caption = "Для остановки построения нажмите клавишу \"Q\"";
  //labelInfo->Width = 200;
  labelInfo->Height = 30;
- labelInfo->Top = chart->Height >> 1;
- labelInfo->Left = chart->Width >> 2;
+ labelInfo->Top = Height >> 1;
+ labelInfo->Left = Width >> 2;
 };
 
 void myChart::labelInfoOff()
@@ -906,14 +895,13 @@ void myChart::labelInfoOff()
 //==============================================================================
 void myChart::createMinMaxEdit(TChartAxis* axis)
 {
-  //---- editMin
-  if(editMax != 0)
-  {
+  //---- editMax
+  if(editMax != 0){
     delete editMax;
     editMax = 0;
   }
-  editMax = new TEdit(chart);
-  editMax->Parent = chart;
+  editMax = new TEdit(this);
+  editMax->Parent = this;
 
   editMax->BorderStyle = bsNone;
   editMax->Width = 40;
@@ -924,14 +912,13 @@ void myChart::createMinMaxEdit(TChartAxis* axis)
   editMax->Top = axis->IStartPos - editMax->Height/2;
   editMax->Text = axis->Maximum;
 
-  //---- editMax
-  if(editMin != 0)
-  {
+  //---- editMin
+  if(editMin != 0){
     delete editMin;
     editMin = 0;
   }
-  editMin = new TEdit(chart);
-  editMin->Parent = chart;
+  editMin = new TEdit(this);
+  editMin->Parent = this;
 
   editMin->BorderStyle = bsNone;
   editMin->Width = 40;
@@ -943,13 +930,12 @@ void myChart::createMinMaxEdit(TChartAxis* axis)
   editMin->Text = currentPar->Axis->Minimum;
 
   //---- buttonMinMaxOk
-  if(buttonMinMaxOk != 0)
-  {
+  if(buttonMinMaxOk != 0){
     delete buttonMinMaxOk;
     buttonMinMaxOk = 0;
   }
-  buttonMinMaxOk = new TButton(chart);
-  buttonMinMaxOk->Parent = chart;
+  buttonMinMaxOk = new TButton(this);
+  buttonMinMaxOk->Parent = this;
 
   buttonMinMaxOk->Caption = "OK";
   buttonMinMaxOk->Width = 25;
@@ -961,18 +947,15 @@ void myChart::createMinMaxEdit(TChartAxis* axis)
 
 void myChart::deleteMinMaxEdit()
 {
- if(editMin != 0)
- {
+ if(editMin != 0){
   delete editMin;
   editMin = 0;
  }
- if(editMax != 0)
- {
+ if(editMax != 0){
   delete editMax;
   editMax = 0;
  }
- if(buttonMinMaxOk != 0)
- {
+ if(buttonMinMaxOk != 0){
   delete buttonMinMaxOk;
   buttonMinMaxOk = 0;
  }
@@ -980,13 +963,13 @@ void myChart::deleteMinMaxEdit()
 
 
 //==============================================================================
-//      clearAllSeries
+//      ClearAllSeriesData
 //==============================================================================
-void myChart::clearAllSeries()
+void myChart::ClearAllSeriesData()
 {
- for(list_it i = mainList.begin(), j = mainList.end(); i != j; ++i)
+  for(list_it i = mainList.begin(), j = mainList.end(); i != j; ++i)
     (*i)->GetSeries()->Clear();
- build = NO_BUILD;
+  build = NO_BUILD;
 };
 
 
@@ -995,8 +978,8 @@ void myChart::clearAllSeries()
 //==============================================================================
 void myChart::addLabel()
 {
- labelList.push_back(&myLabel(chart));
- labelList.back()->PopupMenu->Items->Items[0]->OnClick = deleteLabel;
+  labelList.push_back(&myLabel(this));
+  labelList.back()->PopupMenu->Items->Items[0]->OnClick = deleteLabel;
 };
 
 
@@ -1005,10 +988,10 @@ void myChart::addLabel()
 //==============================================================================
 void __fastcall myChart::deleteLabel(TObject* Sender)
 {
- myLabel* p = myLabel::getCurrentLabel();
- labelList.remove(myLabel::getCurrentLabel());
- delete p;
- p = 0;
+  myLabel* p = myLabel::getCurrentLabel();
+  labelList.remove(myLabel::getCurrentLabel());
+  delete p;
+  p = 0;
 };
 
 //==============================================================================
@@ -1016,12 +999,11 @@ void __fastcall myChart::deleteLabel(TObject* Sender)
 //==============================================================================
 void myChart::deleteAllLabels()
 {
- while( !labelList.empty())
- {
+ while( !labelList.empty()){
     myLabel* p = labelList.back();
     labelList.pop_back();
     delete p;
-    p = NULL;
+    p = 0;
  }
 }
 
@@ -1062,7 +1044,7 @@ void myChart::setChartSettings(TChart* destChart, TChart* sourceChart)
 void myChart::setCountHorizLine(int count)
 {
  countHorizLine = count;
- chart->LeftAxis->Increment = LEFTAXISLENGHT / (countHorizLine + 1);
+ LeftAxis->Increment = LEFTAXISLENGHT / (countHorizLine + 1);
 }
 
 //==============================================================================
@@ -1071,7 +1053,7 @@ void myChart::setCountHorizLine(int count)
 void myChart::setCountVertLine(int count)
 {
  countVertLine = count;
- chart->BottomAxis->Increment = (chart->BottomAxis->Maximum - chart->BottomAxis->Minimum) /
+ BottomAxis->Increment = (BottomAxis->Maximum - BottomAxis->Minimum) /
                                                             (countVertLine + 1);
 }
 
@@ -1103,18 +1085,19 @@ Parametr* myChart::findParByAxis(TChartAxis* axis)
 //==============================================================================
 void myChart::cutInterval()
 {
- if( !cutIntervalButton)
- {
+ if( !cutIntervalButton){
     ShowMessage("Сначала выделите интервал");
     return;
  }
  if(CutX0 >= CutX1)
     std::swap(CutX0, CutX1);
- chart->BottomAxis->SetMinMax(CutX0, CutX1);
- chart->BottomAxis->Increment = (CutX1 - CutX0) / (countVertLine + 1);
+ BottomAxis->SetMinMax(CutX0, CutX1);
+ BottomAxis->Increment = (CutX1 - CutX0) / (countVertLine + 1);
  cutIntervalButton = false;
  timeBar->ChartToTimeBar();
 }
+
+
 
 
 

@@ -13,7 +13,7 @@ int Parametr::CountOfSystem()
 {
  int count = 0;
  for(int i = 0; i < 4; ++i)
-    if((FlyingFile::Instance().getPtrPaspChart() + NPasp)->NSis[i] != -1)
+    if((FlyingFile::Instance().getPtrPaspChart() + paspNumber)->NSis[i] != -1)
        count++;
  return count;
 }
@@ -32,8 +32,8 @@ Parametr::~Parametr()
 //---------------------------------------------------------------------------
 void Parametr::SetNSisInTitle(int ns)
 {
- NSis = ns;
- Axis->Title->Caption = Axis->Title->Caption + " " + IntToStr(NSis);
+ systemNumber = ns;
+ Axis->Title->Caption = Axis->Title->Caption + " " + IntToStr(systemNumber);
 }
 
 
@@ -49,13 +49,13 @@ int Parametr::ChoiseSistem()
       if(Par[i] != NULL)
          if(Par[i]->Series->Title == S)
          {
-            int j = Par[i]->NSis;
+            int j = Par[i]->systemNumber;
             mass[j-1] = 1;
          }
    }
    while(mass[n])
       n++;
-   if((n+1) > SistemCounter(NPasp))
+   if((n+1) > SistemCounter(paspNumber))
       return n;
    return n+1;   */
    return 1;
@@ -82,9 +82,9 @@ int Parametr::FindPosition()
 Parametr::Parametr(const int NumPasp, TChart* chart)
 {
  // additional values
- NPasp = NumPasp;
- tekPaspChart = FlyingFile::Instance().getPtrPaspChart() + NPasp;
- String tekIdent = tekPaspChart->Ident;
+ paspNumber = NumPasp;
+ tekPaspChart = FlyingFile::Instance().getPtrPaspChart() + paspNumber;
+ String ident = tekPaspChart->Ident;
  int N = chart->SeriesCount() - 1;
 
  // create axis and series
@@ -107,7 +107,7 @@ Parametr::Parametr(const int NumPasp, TChart* chart)
  TColor color[] = {clBlue, clGreen, clRed, clFuchsia, clBlack, clOlive, clTeal, clGray};
  Axis->Axis->Color = color[N % 8];
  //Series->SeriesColor = color[N % 8];
- CurrentColor = color[N % 8];
+ currentColor = color[N % 8];
 
  // Separation and grid
  Axis->RoundFirstLabel = false;
@@ -122,14 +122,11 @@ Parametr::Parametr(const int NumPasp, TChart* chart)
 
  // Title
  Axis->Title->Angle = 90;
- Axis->Title->Caption = tekIdent;
- //Series->Title = tekIdent;
- seriesTitle = tekIdent;
- NSis = ChoiseSistem();
+ Axis->Title->Caption = ident;
+ //Series->Title = ident;
+ systemNumber = ChoiseSistem();
  Axis->Title->Visible = false;
- KolSis = CountOfSystem();
- if(KolSis > 1)
-    Axis->Title->Caption = Axis->Title->Caption + " " + StrToInt(NSis);
+ countSys = CountOfSystem();
 
  // символ маркера по умолчанию - 2-ой символ в идентификаторе
  markerSymbol = Axis->Title->Caption.SubString(2, 1);
@@ -145,14 +142,14 @@ Parametr::Parametr(TChart* chart, int itemSeries)
  Axis = chart->CustomAxes->Items[itemSeries];
  axisSizeInCell = (Axis->EndPosition - Axis->StartPosition + 0.5) / chart->LeftAxis->Increment;
  //LoadSeriesTitle();
- /*NPasp = FlyingFile::Instance().getStrData() ? StrToInt(FlyingFile::Instance().findPaspByIdent(Series->Title)) : -1;
- if(NPasp >= 0)
+ /*paspNumber = FlyingFile::Instance().getStrData() ? StrToInt(FlyingFile::Instance().findPaspByIdent(Series->Title)) : -1;
+ if(paspNumber >= 0)
  {
-    KolSis = CountOfSystem();
-    tekPaspChart = FlyingFile::Instance().getPtrPaspChart() + NPasp;
+    countSys = CountOfSystem();
+    tekPaspChart = FlyingFile::Instance().getPtrPaspChart() + paspNumber;
  }else
  {
-    ShowMessage("Не возможно инициализировать параметр. Обратитесь к разработчику.(NPasp < 0, constructor 2)");
+    ShowMessage("Не возможно инициализировать параметр. Обратитесь к разработчику.(paspNumber < 0, constructor 2)");
     return;
  } */
 }
@@ -165,9 +162,9 @@ Parametr::Parametr()
 {
  Axis = 0;
  //Series = 0;
- NSis = 0;
- KolSis = 0;
- NPasp = 0;
+ systemNumber = 0;
+ countSys = 0;
+ paspNumber = 0;
  markerSymbol = "a";
  afterComma = "0.0";
 }
@@ -186,9 +183,9 @@ Parametr::Parametr(const Parametr &P)
  Axis->Automatic = false;
  //Series->XValues->DateTime = true;
 
- NSis = P.NSis;
- KolSis = P.KolSis;
- NPasp = P.NPasp;
+ systemNumber = P.systemNumber;
+ countSys = P.countSys;
+ paspNumber = P.paspNumber;
  markerSymbol = P.markerSymbol;
  afterComma = P.afterComma;
 }
@@ -206,9 +203,9 @@ const Parametr& Parametr::operator=(const Parametr &P)
  if(Axis) delete Axis;
  Axis = new TChartAxis(*P.Axis);
 
- NSis = P.NSis;
- KolSis = P.KolSis;
- NPasp = P.NPasp;
+ systemNumber = P.systemNumber;
+ countSys = P.countSys;
+ paspNumber = P.paspNumber;
  markerSymbol = P.markerSymbol;
  afterComma = P.afterComma;
  return *this;
@@ -246,7 +243,7 @@ void Parametr::DrawTitle(bool printing, int kzoom)
 //------------------------------------------------------------------------------
 //     fulAxis
 //------------------------------------------------------------------------------
-void Parametr::fullAxis()
+void Parametr::FullAxis()
 {
  Axis->Axis->Width = 3;
  Axis->Ticks->Width = 2 ;
@@ -258,7 +255,7 @@ void Parametr::fullAxis()
 //------------------------------------------------------------------------------
 //     slimAxis
 //------------------------------------------------------------------------------
-void Parametr::slimAxis()
+void Parametr::SlimAxis()
 {
  Axis->Axis->Width = 2;
  Axis->Ticks->Width = 1;
@@ -305,7 +302,7 @@ Parametr* Parametr::findParByAxisTitle(std::list<Parametr*> list, String& title)
 //---------------------------------------------------------------------------
 /*int Parametr::GetNStructRK(int NumberRK, int max)
 {
-   AnsiString Ident = Series->Title;
+   String Ident = Series->Title;
 
    for(int i=0; i<max; i++){
       if(! strcmp((FlyingFile::Instance().getPtrRKChart() + i)->Ident, Ident.c_str())){
@@ -318,7 +315,7 @@ Parametr* Parametr::findParByAxisTitle(std::list<Parametr*> list, String& title)
 };     */
 
 
-/*void Parametr::showInfo()
+/*void Parametr::ShowInfo()
 {
  // Canvas
  int x = Axis->PosAxis + 15;
@@ -340,17 +337,17 @@ Parametr* Parametr::findParByAxisTitle(std::list<Parametr*> list, String& title)
 
 
 //---------------------------------------------------------------------------
-/*  Series->Title имеет вид:  "Title NSis markerSymbol NStructRK AfterComma"
+/*  Series->Title имеет вид:  "Title systemNumber markerSymbol NStructRK AfterComma"
     фцнкция разбивает Title на параметры
 -----------------------------------------------------------------------------*/
 /*void Parametr::LoadSeriesTitle()
 {
-   AnsiString s = Series->Title;
+   String s = Series->Title;
    int n = s.Pos(" ");
    //---  титл
    Series->Title = s.SubString(1, n-1);
    //---  номер системы
-   NSis = StrToInt(s.SubString(n+1, 1));
+   systemNumber = StrToInt(s.SubString(n+1, 1));
    //---  символ маркера
    s = s.SubString((n+1)+2, 255);
    markerSymbol = s.SubString(0, 1);

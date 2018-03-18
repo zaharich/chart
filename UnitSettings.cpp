@@ -7,8 +7,12 @@
 #include <iostream>
 
 #include "UnitSettings.h"
+/*---------------------------------------------------------------------------
+ToDO - make hat in StringGrid
+ToDo - make good sort and search (may be with struct)
+ToDo - calculate position fo RK Panel
 
-//---------------------------------------------------------------------------
+//--------------------------------------------------------------------------*/
 #pragma package(smart_init)
 #pragma link "CSPIN"
 #pragma link "TeeComma"
@@ -53,13 +57,13 @@ void __fastcall TFormSettings::FormCreate(TObject *Sender)
 void __fastcall TFormSettings::FormActivate(TObject *Sender)
 {
  LoadChartFromFile(exampleChart, Form1->SourceDir + "\\~copybufferchart");
- //Form1->mainChart->setChartSettings(exampleChart, Form1->mainChart->getChart());  // вариант 2 переноса chart
- //exampleChart->Assign(Form1->mainChart->getChart());                              // вариант 3 переноса chart
+ //Form1->mainChart->setChartSettings(exampleChart, Form1->mainChart);  // вариант 2 переноса chart
+ //exampleChart->Assign(Form1->mainChart);                              // вариант 3 переноса chart
 
  // Chart's size and position
  exampleChart->Align = clNone;
- exampleChart->Height = (Form1->mainChart->getChart()->Height * exampleChart->Width) /
-                        (float)Form1->mainChart->getChart()->Width;
+ exampleChart->Height = (Form1->mainChart->Height * exampleChart->Width) /
+                        (float)Form1->mainChart->Width;
  exampleChart->Top = (TabSheet1->Height - 10 - Panel10->Height - exampleChart->Height)/2 + 15;
  exampleChart->Left = Panel9->Width + 3;
 
@@ -113,7 +117,7 @@ void __fastcall TFormSettings::FormActivate(TObject *Sender)
  Form1->mainChart->printParametrsTo(ListBoxParam);
 
  //======== Parameters ==========
- if(FlyingFile::Instance().getStrData() == NULL)
+ /*if(FlyingFile::Instance().getStrData() == NULL)
      return;
  StringGridMain->RowCount = 0 ;
  if( !(Kpar = FlyingFile::Instance().getKPasp()) )
@@ -126,9 +130,60 @@ void __fastcall TFormSettings::FormActivate(TObject *Sender)
      StringGridMain->Cells[3][i] = (FlyingFile::Instance().getPtrPaspChart() + i - 1)->Ident;
      StringGridMain->Cells[4][i] = (FlyingFile::Instance().getPtrPaspChart() + i - 1)->Name;
      StringGridMain->Cells[5][i] = SistemToString(FlyingFile::Instance().getPtrPaspChart() + i - 1);
- }
+ }  */
+ PackVectorGridNode();
+ FillMainStringGrid();
  packListBoxRazdel();
  Form1->mainChart->printParametrsTo(StringGrid1);
+}
+
+
+//---------------------------------------------------------------------------
+//  Заполнение вектора структур GridNode (инфо всех параметров
+//---------------------------------------------------------------------------
+void TFormSettings::PackVectorGridNode()
+{
+ if(FlyingFile::Instance().getStrData() == NULL)
+   return;
+ if( !(Kpar = FlyingFile::Instance().getKPasp()) )
+   return;
+ v.reserve(Kpar);
+ //GridNode tempStruct;
+ for(int i = 0; i < Kpar; ++i)
+ {
+   GridNode tempStruct;
+   tempStruct.razdel = (FlyingFile::Instance().getPtrPaspChart() + i)->Razdel;
+   tempStruct.zamer = (FlyingFile::Instance().getPtrPaspChart() + i)->Zamer;
+   tempStruct.ident = (FlyingFile::Instance().getPtrPaspChart() + i)->Ident;
+   tempStruct.name = (FlyingFile::Instance().getPtrPaspChart() + i)->Name;
+   tempStruct.systems = (SistemToString(FlyingFile::Instance().getPtrPaspChart() + i)).c_str();
+   v.push_back(tempStruct);
+ }
+ for(std::vector<GridNode>::iterator it_b = v.begin(), it_e = v.end(); it_b != it_e; ++it_b)
+ {
+   AnsiString str = ((*it_b).ident).c_str();
+   int test = 0;
+ }
+}
+
+
+//---------------------------------------------------------------------------
+//  Заполнить StringGrid вектором
+//---------------------------------------------------------------------------
+void TFormSettings::FillMainStringGrid()
+{
+ StringGridMain->RowCount = 0;
+ int i = 1;
+ for(std::vector<GridNode>::iterator it_b = v.begin(), it_e = v.end(); it_b != it_e; ++it_b)
+ {
+   //Log::instance().Write( ((*it_b).ident).c_str() );
+   /*StringGridMain->Cells[findName("Идентификатор")][i]*/AnsiString str = ((*it_b).ident).c_str();
+   StringGridMain->Cells[findName("Наименование" )][i] = ((*it_b).name).c_str();
+   StringGridMain->Cells[findName("Раздел"       )][i] = ((*it_b).razdel).c_str();
+   StringGridMain->Cells[findName("Замер"        )][i] = ((*it_b).zamer).c_str();
+   StringGridMain->Cells[findName("Системы"      )][i] = ((*it_b).systems).c_str();
+   ++i;
+ }
 }
 
 
@@ -154,15 +209,13 @@ void __fastcall TFormSettings::StringGridMainSelectCell(TObject *Sender,
  int j = FlyingFile::Instance().findPaspByIdent(StringGridMain->Cells[identNum][TekRow]);
 
  // если параметр RK
- if((FlyingFile::Instance().getPtrPaspChart()+j)->Tip == 0 || (FlyingFile::Instance().getPtrPaspChart()+j)->Tip == 1)
- {
+ if((FlyingFile::Instance().getPtrPaspChart()+j)->Tip == 0 || (FlyingFile::Instance().getPtrPaspChart()+j)->Tip == 1){
     int r = FlyingFile::Instance().findPaspRKByIdent((FlyingFile::Instance().getPtrPaspChart() + j)->Ident);
 
     // проходим по всем паспортам_RK (признак конца NRK_SL == 0)
-    AnsiString mRK[33];
+    String mRK[33];
     int tekNRK = r;
-    while(tekNRK)
-    {
+    while(tekNRK){
        mRK[(FlyingFile::Instance().getPtrRKChart() + tekNRK)->NRazRK] = (FlyingFile::Instance().getPtrRKChart() + tekNRK)->NameRK;
        tekNRK = (FlyingFile::Instance().getPtrRKChart() + tekNRK)->NRK_SL;
     }
@@ -188,6 +241,7 @@ void __fastcall TFormSettings::StringGridMainDblClick(TObject *Sender)
 {
  if( (TekRow == 0) || (TekRow > Kpar) || (FlyingFile::Instance().getStrData() == NULL) )
      return;
+
  int identNum = findName("Идентификатор");
  int j = FlyingFile::Instance().findPaspByIdent(StringGridMain->Cells[identNum][TekRow]);
  Form1->mainChart->addParametr(j);
@@ -204,7 +258,7 @@ void __fastcall TFormSettings::StringGrid1SelectCell(TObject *Sender,
 {
  TekRow = ARow;
  Form1->mainChart->setCurrentParametr((Form1->mainChart->findParByNumber(ARow)));
- String name = (Form1->mainChart->getCurrentParametr())->GetSeriesTitle();
+ String name = (Form1->mainChart->getCurrentParametr())->GetSeries()->Title;
 
  for(int i = 1; i < StringGridMain->RowCount; ++i)
  {
@@ -243,14 +297,12 @@ void __fastcall TFormSettings::SpeedButtonOKClick(TObject *Sender)
 {
  String identName = StringGridMain->Cells[findName("Идентификатор")][TekRow];
  int j = FlyingFile::Instance().findPaspByIdent(identName);
- if(j < 0) return;
-
- //StringGrid1->RowCount++;
- //StringGrid1->Cells[0][StringGrid1->RowCount] = identName;
-
- // get NRazRK
- (ListBoxRK->ItemIndex < 0) ? Form1->mainChart->addParametr(j) :
-                              Form1->mainChart->addParametr(j, ListBoxRK->ItemIndex + 9);
+ if(j < 0)
+   return;
+ if(ListBoxRK->ItemIndex < 0)
+   Form1->mainChart->addParametr(j);
+ else
+   Form1->mainChart->addParametr(j, ListBoxRK->ItemIndex + 9);
  Form1->mainChart->printParametrsTo(StringGrid1);
 }
 
@@ -262,25 +314,6 @@ void __fastcall TFormSettings::SpeedButtonCancelClick(TObject *Sender)
 {
  PanelRK->Visible = false;
  StringGridMain->Enabled = true;
-}
-
-
-//===========================================================================
-void __fastcall TFormSettings::ButtonAllClick(TObject *Sender)
-{
- StringGridMain->RowCount = 1;
- for(int k = 1; k < Kpar; ++k){
-     ++StringGridMain->RowCount;
-     StringGridMain->Cells[0][k] = k;
-     StringGridMain->Cells[findName("Раздел")       ][k] = (FlyingFile::Instance().getPtrPaspChart() + k - 1)->Razdel;
-     StringGridMain->Cells[findName("Замер")        ][k] = (FlyingFile::Instance().getPtrPaspChart() + k - 1)->Zamer;
-     StringGridMain->Cells[findName("Идентификатор")][k] = (FlyingFile::Instance().getPtrPaspChart() + k - 1)->Ident;
-     StringGridMain->Cells[findName("Наименование") ][k] = (FlyingFile::Instance().getPtrPaspChart() + k - 1)->Name;
-     StringGridMain->Cells[findName("Системы")      ][k] = SistemToString(FlyingFile::Instance().getPtrPaspChart() + k - 1);
- }
- StringGridMain->Visible = true;
- for(int i = 0; i < ListBoxRazdel->Count; ++i)
-     ListBoxRazdel->Selected[i] = true;
 }
 
 
@@ -314,39 +347,6 @@ void TFormSettings::filterRazdel(const String& nameRazdel)
      --StringGridMain->RowCount;
  StringGridMain->SetFocus();
 }
-
-
-//===========================================================================
-void __fastcall TFormSettings::ListBoxRazdelClick(TObject *Sender)
-{
- TListBox* list = (TListBox*)Sender;
- StringGridMain->Visible = true;
- StringGridMain->RowCount = 0;
-
- size_t countSelect(0);
- bool find = false;
- for(int i = 0; i < list->Count; ++i){
-     if(list->Selected[i]){
-         filterRazdel(list->Items->Strings[i]);
-         find = true;
-         ++countSelect;
-     }
- }
- StringGridMain->Visible = (find) ? true : false;
-
- // выбран один параметр
- if((list->Count - countSelect) == 1){
-     StringGridMain->RowCount = 0;
-     for(int i = 0; i < list->Count; ++i){
-         list->Selected[i] = !list->Selected[i];
-         if(list->Selected[i])
-            filterRazdel(list->Items->Strings[i]);
-     }
- }
- ++StringGridMain->RowCount;
-}
-
-
 //============================================================================
 void __fastcall TFormSettings::Splitter2Moved(TObject *Sender)
 {
@@ -420,13 +420,13 @@ void __fastcall TFormSettings::StringGrid1DragDrop(TObject *Sender,
 void __fastcall TFormSettings::StringGrid1DrawCell(TObject *Sender,
       int ACol, int ARow, TRect &Rect, TGridDrawState State)
 {
- /*if(Form1->mainChart->mainList.begin() == Form1->mainChart->mainList.end())
+ if(Form1->mainChart->mainList.begin() == Form1->mainChart->mainList.end())
     return;
- list_it it = Form1->mainChart->mainList.begin();
- std::advance(it, ARow);
+ list_it x = Form1->mainChart->mainList.begin();
+ std::advance(x, ARow);                                                         // move iterator to ARow count
  StringGrid1->Canvas->FillRect(Rect);
- StringGrid1->Canvas->Font->Color = (*it)->Axis->Axis->Color;
- StringGrid1->Canvas->TextOutA(Rect.Left + 3, Rect.Top + 3, StringGrid1->Cells[ACol][ARow]); */
+ StringGrid1->Canvas->Font->Color = (*x)->Axis->Axis->Color;
+ StringGrid1->Canvas->TextOutA(Rect.Left + 3, Rect.Top + 3, StringGrid1->Cells[ACol][ARow]);
 }
 
 
@@ -456,11 +456,11 @@ void __fastcall TFormSettings::StringGridMainMouseUp(TObject *Sender,
  choiceCol = numCol(0, 0, X);
 
  // сортировка не работает когда выбрано несклько разделов
- int temp(0);
- for(int i=0; i<ListBoxRazdel->Count; ++i)
-     if(ListBoxRazdel->Selected[i])
-         ++temp;
- if(ListBoxRazdel->Count != temp)
+ int countCheckedRazdel = 0;
+ for(int i=0; i<CheckListBoxRazdel->Count; ++i)
+     if(CheckListBoxRazdel->Checked[i])
+         ++countCheckedRazdel;
+ if(CheckListBoxRazdel->Count != countCheckedRazdel)
      return;
 
  // сортировка по алфавиту
@@ -640,7 +640,7 @@ void __fastcall TFormSettings::StringGridMainMouseDown(
 //===========================================================================
 //    ищет столбец с идентификатором
 //===========================================================================
-int TFormSettings::findName(const AnsiString& s)
+int TFormSettings::findName(const String& s)
 {
  for(int i = 0; i < StringGridMain->ColCount; ++i)
      if(StringGridMain->Cells[i][0] == s)
@@ -678,7 +678,7 @@ void __fastcall TFormSettings::SpeedButtonDeleteClick(
 void __fastcall TFormSettings::okButtonClick(TObject *Sender)
 {
  setAxisSettings();
- Form1->mainChart->setChartSettings(Form1->mainChart->getChart(), exampleChart);     // this?
+ Form1->mainChart->setChartSettings(Form1->mainChart, exampleChart);     // this?
  FormSettings->ModalResult = 1;
 }
 
@@ -742,11 +742,11 @@ void TFormSettings::setAxisSettings()
  if(curPar->Series->Pen->Width != 1 && curPar->Series->Pen->Style != psSolid)
     ShowMessage("Cтили линии со штрихами и пунктирами доступны только при толщине = 1");  */
 
- // NSis
- curPar->NSis = ComboBoxNSys->Text.ToInt();
+ // systemNumber
+ curPar->systemNumber = ComboBoxNSys->Text.ToInt();
  int i = curPar->Axis->Title->Caption.Pos(" ");
  if(i > 0)
-     curPar->Axis->Title->Caption = curPar->Axis->Title->Caption.SubString(1, i - 1) + " " + IntToStr(curPar->NSis);
+     curPar->Axis->Title->Caption = curPar->Axis->Title->Caption.SubString(1, i - 1) + " " + IntToStr(curPar->systemNumber);
 
  // afterComma
  switch(afterCommaComboBox->ItemIndex)
@@ -836,7 +836,7 @@ void __fastcall TFormSettings::TabSheet1Resize(TObject *Sender)
  // размеры exampleChart пропорциональны главному Chart
  // exampleChart->Align = clNone;
  exampleChart->Width = TabSheet1->Width - Panel9->Width - 5;
- exampleChart->Height = ((float)Form1->mainChart->getChart()->Height / (float)Form1->mainChart->getChart()->Width)
+ exampleChart->Height = ((float)Form1->mainChart->Height / (float)Form1->mainChart->Width)
                         * (float)exampleChart->Width;
  exampleChart->Top    = (TabSheet1->Height - 10 - Panel10->Height - exampleChart->Height)/2 + 15;
  exampleChart->Left   = Panel9->Width + 3;
@@ -940,15 +940,15 @@ void TFormSettings::getAxisSettings()
 
          // идентификатор, наименование
          EditName->Text = curPar->Axis->Title->Caption;
-         EditIdent->Text = curPar->GetSeriesTitle();
-         EditMainName->Text = String((FlyingFile::Instance().getPtrPaspChart() + curPar->NPasp)->Name);
-         EditPaspN->Text = curPar->NPasp;
+         EditIdent->Text = curPar->GetSeries()->Title;
+         EditMainName->Text = String((FlyingFile::Instance().getPtrPaspChart() + curPar->paspNumber)->Name);
+         EditPaspN->Text = curPar->paspNumber;
 
          //номер системы
          ComboBoxNSys->Items->Clear();                   // сколько систем ,
-         for(int i = 0; i < (curPar->KolSis); ++i)       // столько и пунктов
+         for(int i = 0; i < (curPar->countSys); ++i)       // столько и пунктов
              ComboBoxNSys->Items->Add(i+1);              // в выпадающем списке
-         ComboBoxNSys->ItemIndex = curPar->NSis - 1;
+         ComboBoxNSys->ItemIndex = curPar->systemNumber - 1;
 
          // видимая/ невидимая
          CheckBoxVisible->Checked = !curPar->Axis->Visible;
@@ -957,9 +957,9 @@ void TFormSettings::getAxisSettings()
          EditMark->Text = curPar->markerSymbol;
 
          //---- разовые команда
-         if( curPar->GetTagSeries() )
+         if( curPar->GetSeries()->Tag )
          {
-         //if(curPar->NRK != -1 && ((FlyingFile::Instance().getPtrPaspChart() + curPar->NPasp)->Tip == 0 || (FlyingFile::Instance().getPtrPaspChart() + curPar->NPasp)->Tip == 1)){
+         //if(curPar->NRK != -1 && ((FlyingFile::Instance().getPtrPaspChart() + curPar->paspNumber)->Tip == 0 || (FlyingFile::Instance().getPtrPaspChart() + curPar->paspNumber)->Tip == 1)){
              ParameterRK* p = dynamic_cast<ParameterRK*>(curPar);
              EditMainNameRK->Text = p->NameRK;
              EditNrazr->Text = p->NRK;
@@ -1086,8 +1086,8 @@ void __fastcall TFormSettings::ListBoxParamDrawItem(TWinControl *Control,
 //  Функция устанавливает правильный разделитель целой и дробной части
 //  независимо от того что ввел пользователь "." или ","
 //---------------------------------------------------------------------------
-String __fastcall TFormSettings::TrueSeparator(const AnsiString& textEdit){
- AnsiString sep = AnsiString(DecimalSeparator);  // текущий разделитель
+String __fastcall TFormSettings::TrueSeparator(const String& textEdit){
+ String sep = String(DecimalSeparator);  // текущий разделитель
  int i = 0;
  if ( i != textEdit.Pos(",") ){     //запятая
     i = textEdit.Pos(",");
@@ -1156,21 +1156,6 @@ void __fastcall TFormSettings::RKListPanelMouseUp(TObject *Sender,
 
 
 //---------------------------------------------------------------------------
-// Заполнение списка разделов
-//---------------------------------------------------------------------------
-void TFormSettings::packListBoxRazdel()
-{
- String nameRazdel = "0";
- ListBoxRazdel->Clear();
- for(int i = 0, kr = FlyingFile::Instance().getKRazdel(); i < kr; ++i){
-    nameRazdel = (FlyingFile::Instance().getPtrRazlel() + i)->Razdel;
-    ListBoxRazdel->AddItem(nameRazdel, this);
-    ListBoxRazdel->Selected[i] = true;
- }
-}
-
-
-//---------------------------------------------------------------------------
 // Подбор высоты строки
 //---------------------------------------------------------------------------
 void TFormSettings::RowHeight(TStringGrid * G)
@@ -1182,13 +1167,14 @@ void TFormSettings::RowHeight(TStringGrid * G)
 
 
 //---------------------------------------------------------------------------
-// конвертирует short int NSis[4] в строчку AnsiString
+// конвертирует short int systemNumber[4] в строчку String
 //---------------------------------------------------------------------------
-AnsiString TFormSettings::SistemToString(const struct PaspChart *Pasp)
+String TFormSettings::SistemToString(const struct PaspChart *Pasp)
 {
- AnsiString str;
+ String str;
  for(int j = 0; j < 4; ++j)
-    if( Pasp->NSis[j] != -1){
+    if( Pasp->NSis[j] != -1)
+    {
        str += Pasp->NSis[j];
        str += " ";
     }
@@ -1199,7 +1185,7 @@ AnsiString TFormSettings::SistemToString(const struct PaspChart *Pasp)
 //---------------------------------------------------------------------------
 // Поиск
 //---------------------------------------------------------------------------
-void TFormSettings::Search(const AnsiString& text)
+void TFormSettings::Search(const String& text)
 {
    int n = 0;
    if(ComboBox2->ItemIndex == 0)
@@ -1334,5 +1320,103 @@ void __fastcall TFormSettings::testPointSeriesButtonClick(TObject *Sender)
  }
  series->AddArray(X, pointCount, Y, pointCount);
 }
+
+
 //---------------------------------------------------------------------------
+// Заполнение списка разделов
+//---------------------------------------------------------------------------
+void TFormSettings::packListBoxRazdel()
+{
+ String nameRazdel = "";
+ CheckListBoxRazdel->Clear();
+ for(int i = 0, kr = FlyingFile::Instance().getKRazdel(); i < kr; ++i)
+ {
+    nameRazdel = (FlyingFile::Instance().getPtrRazlel() + i)->Razdel;
+    CheckListBoxRazdel->AddItem(nameRazdel, this);
+    CheckListBoxRazdel->Checked[i] = true;
+ }
+ ButtonAll->Caption = "Снять все";
+}
+
+
+//---------------------------------------------------------------------------
+//     Выбор разделов для отображения в главной таблице
+//---------------------------------------------------------------------------
+void __fastcall TFormSettings::CheckListBoxRazdelClick(TObject *Sender)
+{
+ TCheckListBox* checkBox = (TCheckListBox*)Sender;
+ StringGridMain->RowCount = 0;
+ int countSelect = countCheckedItems(checkBox);
+ for(int i = 0; i < checkBox->Count; ++i)
+ {
+   if(checkBox->Checked[i])
+     filterRazdel(checkBox->Items->Strings[i]);
+ }
+ ++StringGridMain->RowCount;
+}
+
+
+//---------------------------------------------------------------------------
+// При нажатии на наименование раздела, ставится галочка
+//---------------------------------------------------------------------------
+void __fastcall TFormSettings::CheckListBoxRazdelMouseDown(TObject *Sender,
+      TMouseButton Button, TShiftState Shift, int X, int Y)
+{
+ // if click on Checked square, this method don't need
+ int heightCheckedSquare = 14;
+ if(X <= heightCheckedSquare)
+    return;
+ TCheckListBox* checkBox = dynamic_cast<TCheckListBox*>(Sender);
+ int itemNumber = Y/checkBox->ItemHeight + checkBox->TopIndex;
+ checkBox->Checked[itemNumber] = !checkBox->Checked[itemNumber];
+}
+
+
+//---------------------------------------------------------------------------
+// Подсчет активных разделов
+//---------------------------------------------------------------------------
+int TFormSettings::countCheckedItems(TCheckListBox* checkBox)
+{
+ int countCheckedItems = 0;
+ for(int i = 0; i < checkBox->Count; ++i)
+ {
+   if(checkBox->Checked[i])
+     ++countCheckedItems;
+ }
+ return countCheckedItems;
+}
+
+
+//---------------------------------------------------------------------------
+// Button All Razdel
+//===========================================================================
+void __fastcall TFormSettings::ButtonAllClick(TObject *Sender)
+{
+ if(ButtonAll->Caption == "Отметить все")
+ {
+   StringGridMain->RowCount = 1;
+   for(int k = 1; k < Kpar; ++k)
+   {
+     ++StringGridMain->RowCount;
+     StringGridMain->Cells[0][k] = k;
+     StringGridMain->Cells[findName("Раздел")][k] = (FlyingFile::Instance().getPtrPaspChart() + k - 1)->Razdel;
+     StringGridMain->Cells[findName("Замер")][k] = (FlyingFile::Instance().getPtrPaspChart() + k - 1)->Zamer;
+     StringGridMain->Cells[findName("Идентификатор")][k] = (FlyingFile::Instance().getPtrPaspChart() + k - 1)->Ident;
+     StringGridMain->Cells[findName("Наименование")][k] = (FlyingFile::Instance().getPtrPaspChart() + k - 1)->Name;
+     StringGridMain->Cells[findName("Системы")][k] = SistemToString(FlyingFile::Instance().getPtrPaspChart() + k - 1);
+   }
+   StringGridMain->Visible = true;
+   for(int i = 0; i < CheckListBoxRazdel->Count; ++i)
+     CheckListBoxRazdel->Checked[i] = true;
+   ButtonAll->Caption = "Снять все";
+ }
+ else
+ {
+   for(int i = 0; i < CheckListBoxRazdel->Count; ++i)
+     CheckListBoxRazdel->Checked[i] = false;
+   FormSettings->CheckListBoxRazdelClick(CheckListBoxRazdel);
+   ButtonAll->Caption = "Отметить все";
+ }
+}
+
 

@@ -18,7 +18,7 @@ FlyingFile& FlyingFile::Instance()
 //==============================================================================
 //    initFlyingFile
 //==============================================================================
-void FlyingFile::initFlyingFile(const AnsiString& pathToFlyingFile)
+void FlyingFile::initFlyingFile(const String& pathToFlyingFile)
 {
  // Загрузка полетных данных из файла *.48ХХ
  strData = fopen(pathToFlyingFile.c_str(), "rb");
@@ -89,7 +89,7 @@ int FlyingFile::findPaspRKByIdent(const String& ident)
 //==============================================================================
 //   findNStructRKByIdentNRK
 //==============================================================================
-int FlyingFile::findNStructRKByIdentNRK(const AnsiString& ident, const int nRK)
+int FlyingFile::findNStructRKByIdentNRK(const String& ident, const int nRK)
 {
  for(int i = 0; i < kStructRK; ++i)
     if(! strcmp( (PtrRKChart + i)->Ident, ident.c_str()))

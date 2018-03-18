@@ -31,12 +31,12 @@ class FlyingFile
 
   public:
     // init
-    void initFlyingFile(const AnsiString& pathToFlyingFile);
+    void initFlyingFile(const String& pathToFlyingFile);
 
     // find
     int findPaspByIdent(const String& ident);
     int findPaspRKByIdent(const String& ident);
-    int findNStructRKByIdentNRK(const AnsiString& ident, const int nRK);
+    int findNStructRKByIdentNRK(const String& ident, const int nRK);
 
     // return number of structure RK by ident
 

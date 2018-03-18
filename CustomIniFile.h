@@ -19,24 +19,24 @@ class CustomIniFile
     enum {NO_ERR, ANYINI_ERR, DATAFILE_ERR, FORMATKA_ERR, LIBRARY_ERR};
     
  public:
-    AnsiString iniFileName;
-    AnsiString DataFile;
-    AnsiString Format;
-    AnsiString Library;
+    String iniFileName;
+    String DataFile;
+    String Format;
+    String Library;
     
     int fileError;
 
-    static AnsiString dataDir;
-    static AnsiString formatDir;
-    static AnsiString iniDir;
-    static AnsiString libDir;
+    static String dataDir;
+    static String formatDir;
+    static String iniDir;
+    static String libDir;
 
-    CustomIniFile(AnsiString& nameIniAny);
+    CustomIniFile(String& nameIniAny);
     ~CustomIniFile();
 
     void writeToIniFile();
     void readFromIniFile();
-    void openIni(const AnsiString& nameIni);
-    void saveIniAs(const AnsiString& nameIni);
+    void openIni(const String& nameIni);
+    void saveIniAs(const String& nameIni);
 };
 #endif

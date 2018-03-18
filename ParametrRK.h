@@ -29,14 +29,12 @@ class ParameterRK : public Parametr
 
     // methods
     void SeriesAdd(const double x, const double y){Series->AddXY(x, y);};
-    bool GetTagSeries(){return Series->Tag;};                                   // RK = 1, Fiz = 0
-    String GetSeriesTitle(){return Series->Title;};
     int GetSeriesWidth(){return Series->Pen->Width;};
     TCustomLineSeries* GetSeries(){return Series;};
 
     void LoadSeriesTitle();
     void SaveSeriesTitle();
-    void showInfo();
+    void ShowInfo();
 };
 
 #endif
